@@ -354,7 +354,7 @@
 
 [[projects]]
   branch = "master"
-  name = "github.com/xanzy/terraform-provider-cosmic"
+  name = "github.com/MissionCriticalCloud/terraform-provider-cosmic"
   packages = ["cosmic"]
   revision = "88ebb610560c0a9daef3725ec13370619661beb7"
 
