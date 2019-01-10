@@ -88,7 +88,7 @@ type QueryAsyncJobResultResponse struct {
 	Jobresult       json.RawMessage `json:"jobresult,omitempty"`
 	Jobresultcode   int             `json:"jobresultcode,omitempty"`
 	Jobresulttype   string          `json:"jobresulttype,omitempty"`
-    Jobstatus       int             `json:"jobstatus,omitempty"`
+	Jobstatus       int             `json:"jobstatus,omitempty"`
 	Userid          string          `json:"userid,omitempty"`
 }
 
@@ -237,5 +237,6 @@ type AsyncJob struct {
 	Jobresult       json.RawMessage `json:"jobresult,omitempty"`
 	Jobresultcode   int             `json:"jobresultcode,omitempty"`
 	Jobresulttype   string          `json:"jobresulttype,omitempty"`
+	Jobstatus       int             `json:"jobstatus,omitempty"`
 	Userid          string          `json:"userid,omitempty"`
 }

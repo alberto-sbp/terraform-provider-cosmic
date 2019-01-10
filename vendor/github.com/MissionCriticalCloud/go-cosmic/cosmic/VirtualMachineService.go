@@ -115,6 +115,7 @@ type UpdateDefaultNicForVirtualMachineResponse struct {
 		Type              string   `json:"type,omitempty"`
 		VirtualmachineIds []string `json:"virtualmachineIds,omitempty"`
 	} `json:"affinitygroup,omitempty"`
+	Bootmenutimeout       int64             `json:"bootmenutimeout,omitempty"`
 	Cpunumber             int               `json:"cpunumber,omitempty"`
 	Cpuused               string            `json:"cpuused,omitempty"`
 	Created               string            `json:"created,omitempty"`
@@ -144,6 +145,8 @@ type UpdateDefaultNicForVirtualMachineResponse struct {
 	Isoid                 string            `json:"isoid,omitempty"`
 	Isoname               string            `json:"isoname,omitempty"`
 	Keypair               string            `json:"keypair,omitempty"`
+	Laststartdate         string            `json:"laststartdate,omitempty"`
+	Laststartversion      string            `json:"laststartversion,omitempty"`
 	Maintenancepolicy     string            `json:"maintenancepolicy,omitempty"`
 	Manufacturerstring    string            `json:"manufacturerstring,omitempty"`
 	Memory                int               `json:"memory,omitempty"`
@@ -301,6 +304,7 @@ type RemoveNicFromVirtualMachineResponse struct {
 		Type              string   `json:"type,omitempty"`
 		VirtualmachineIds []string `json:"virtualmachineIds,omitempty"`
 	} `json:"affinitygroup,omitempty"`
+	Bootmenutimeout       int64             `json:"bootmenutimeout,omitempty"`
 	Cpunumber             int               `json:"cpunumber,omitempty"`
 	Cpuused               string            `json:"cpuused,omitempty"`
 	Created               string            `json:"created,omitempty"`
@@ -330,6 +334,8 @@ type RemoveNicFromVirtualMachineResponse struct {
 	Isoid                 string            `json:"isoid,omitempty"`
 	Isoname               string            `json:"isoname,omitempty"`
 	Keypair               string            `json:"keypair,omitempty"`
+	Laststartdate         string            `json:"laststartdate,omitempty"`
+	Laststartversion      string            `json:"laststartversion,omitempty"`
 	Maintenancepolicy     string            `json:"maintenancepolicy,omitempty"`
 	Manufacturerstring    string            `json:"manufacturerstring,omitempty"`
 	Memory                int               `json:"memory,omitempty"`
@@ -507,6 +513,7 @@ type AddNicToVirtualMachineResponse struct {
 		Type              string   `json:"type,omitempty"`
 		VirtualmachineIds []string `json:"virtualmachineIds,omitempty"`
 	} `json:"affinitygroup,omitempty"`
+	Bootmenutimeout       int64             `json:"bootmenutimeout,omitempty"`
 	Cpunumber             int               `json:"cpunumber,omitempty"`
 	Cpuused               string            `json:"cpuused,omitempty"`
 	Created               string            `json:"created,omitempty"`
@@ -536,6 +543,8 @@ type AddNicToVirtualMachineResponse struct {
 	Isoid                 string            `json:"isoid,omitempty"`
 	Isoname               string            `json:"isoname,omitempty"`
 	Keypair               string            `json:"keypair,omitempty"`
+	Laststartdate         string            `json:"laststartdate,omitempty"`
+	Laststartversion      string            `json:"laststartversion,omitempty"`
 	Maintenancepolicy     string            `json:"maintenancepolicy,omitempty"`
 	Manufacturerstring    string            `json:"manufacturerstring,omitempty"`
 	Memory                int               `json:"memory,omitempty"`
@@ -682,6 +691,7 @@ type ResetPasswordForVirtualMachineResponse struct {
 		Type              string   `json:"type,omitempty"`
 		VirtualmachineIds []string `json:"virtualmachineIds,omitempty"`
 	} `json:"affinitygroup,omitempty"`
+	Bootmenutimeout       int64             `json:"bootmenutimeout,omitempty"`
 	Cpunumber             int               `json:"cpunumber,omitempty"`
 	Cpuused               string            `json:"cpuused,omitempty"`
 	Created               string            `json:"created,omitempty"`
@@ -711,6 +721,8 @@ type ResetPasswordForVirtualMachineResponse struct {
 	Isoid                 string            `json:"isoid,omitempty"`
 	Isoname               string            `json:"isoname,omitempty"`
 	Keypair               string            `json:"keypair,omitempty"`
+	Laststartdate         string            `json:"laststartdate,omitempty"`
+	Laststartversion      string            `json:"laststartversion,omitempty"`
 	Maintenancepolicy     string            `json:"maintenancepolicy,omitempty"`
 	Manufacturerstring    string            `json:"manufacturerstring,omitempty"`
 	Memory                int               `json:"memory,omitempty"`
@@ -862,6 +874,7 @@ type ChangeServiceForVirtualMachineResponse struct {
 		Type              string   `json:"type,omitempty"`
 		VirtualmachineIds []string `json:"virtualmachineIds,omitempty"`
 	} `json:"affinitygroup,omitempty"`
+	Bootmenutimeout       int64             `json:"bootmenutimeout,omitempty"`
 	Cpunumber             int               `json:"cpunumber,omitempty"`
 	Cpuused               string            `json:"cpuused,omitempty"`
 	Created               string            `json:"created,omitempty"`
@@ -891,6 +904,8 @@ type ChangeServiceForVirtualMachineResponse struct {
 	Isoid                 string            `json:"isoid,omitempty"`
 	Isoname               string            `json:"isoname,omitempty"`
 	Keypair               string            `json:"keypair,omitempty"`
+	Laststartdate         string            `json:"laststartdate,omitempty"`
+	Laststartversion      string            `json:"laststartversion,omitempty"`
 	Maintenancepolicy     string            `json:"maintenancepolicy,omitempty"`
 	Manufacturerstring    string            `json:"manufacturerstring,omitempty"`
 	Memory                int               `json:"memory,omitempty"`
@@ -1153,6 +1168,7 @@ type AssignVirtualMachineResponse struct {
 		Type              string   `json:"type,omitempty"`
 		VirtualmachineIds []string `json:"virtualmachineIds,omitempty"`
 	} `json:"affinitygroup,omitempty"`
+	Bootmenutimeout       int64             `json:"bootmenutimeout,omitempty"`
 	Cpunumber             int               `json:"cpunumber,omitempty"`
 	Cpuused               string            `json:"cpuused,omitempty"`
 	Created               string            `json:"created,omitempty"`
@@ -1182,6 +1198,8 @@ type AssignVirtualMachineResponse struct {
 	Isoid                 string            `json:"isoid,omitempty"`
 	Isoname               string            `json:"isoname,omitempty"`
 	Keypair               string            `json:"keypair,omitempty"`
+	Laststartdate         string            `json:"laststartdate,omitempty"`
+	Laststartversion      string            `json:"laststartversion,omitempty"`
 	Maintenancepolicy     string            `json:"maintenancepolicy,omitempty"`
 	Manufacturerstring    string            `json:"manufacturerstring,omitempty"`
 	Memory                int               `json:"memory,omitempty"`
@@ -1268,6 +1286,10 @@ func (p *DeployVirtualMachineParams) toURLValues() url.Values {
 		vv := strings.Join(v.([]string), ",")
 		u.Set("affinitygroupnames", vv)
 	}
+	if v, found := p.p["bootmenutimeout"]; found {
+		vv := strconv.FormatInt(v.(int64), 10)
+		u.Set("bootmenutimeout", vv)
+	}
 	if v, found := p.p["customid"]; found {
 		u.Set("customid", v.(string))
 	}
@@ -1330,12 +1352,21 @@ func (p *DeployVirtualMachineParams) toURLValues() url.Values {
 	if v, found := p.p["macaddress"]; found {
 		u.Set("macaddress", v.(string))
 	}
+	if v, found := p.p["maintenancepolicy"]; found {
+		u.Set("maintenancepolicy", v.(string))
+	}
+	if v, found := p.p["manufacturerstring"]; found {
+		u.Set("manufacturerstring", v.(string))
+	}
 	if v, found := p.p["name"]; found {
 		u.Set("name", v.(string))
 	}
 	if v, found := p.p["networkids"]; found {
 		vv := strings.Join(v.([]string), ",")
 		u.Set("networkids", vv)
+	}
+	if v, found := p.p["optimisefor"]; found {
+		u.Set("optimisefor", v.(string))
 	}
 	if v, found := p.p["projectid"]; found {
 		u.Set("projectid", v.(string))
@@ -1386,6 +1417,13 @@ func (p *DeployVirtualMachineParams) SetAffinitygroupnames(v []string) {
 		p.p = make(map[string]interface{})
 	}
 	p.p["affinitygroupnames"] = v
+}
+
+func (p *DeployVirtualMachineParams) SetBootmenutimeout(v int64) {
+	if p.p == nil {
+		p.p = make(map[string]interface{})
+	}
+	p.p["bootmenutimeout"] = v
 }
 
 func (p *DeployVirtualMachineParams) SetCustomid(v string) {
@@ -1507,6 +1545,20 @@ func (p *DeployVirtualMachineParams) SetMacaddress(v string) {
 	p.p["macaddress"] = v
 }
 
+func (p *DeployVirtualMachineParams) SetMaintenancepolicy(v string) {
+	if p.p == nil {
+		p.p = make(map[string]interface{})
+	}
+	p.p["maintenancepolicy"] = v
+}
+
+func (p *DeployVirtualMachineParams) SetManufacturerstring(v string) {
+	if p.p == nil {
+		p.p = make(map[string]interface{})
+	}
+	p.p["manufacturerstring"] = v
+}
+
 func (p *DeployVirtualMachineParams) SetName(v string) {
 	if p.p == nil {
 		p.p = make(map[string]interface{})
@@ -1519,6 +1571,13 @@ func (p *DeployVirtualMachineParams) SetNetworkids(v []string) {
 		p.p = make(map[string]interface{})
 	}
 	p.p["networkids"] = v
+}
+
+func (p *DeployVirtualMachineParams) SetOptimisefor(v string) {
+	if p.p == nil {
+		p.p = make(map[string]interface{})
+	}
+	p.p["optimisefor"] = v
 }
 
 func (p *DeployVirtualMachineParams) SetProjectid(v string) {
@@ -1637,6 +1696,7 @@ type DeployVirtualMachineResponse struct {
 		Type              string   `json:"type,omitempty"`
 		VirtualmachineIds []string `json:"virtualmachineIds,omitempty"`
 	} `json:"affinitygroup,omitempty"`
+	Bootmenutimeout       int64             `json:"bootmenutimeout,omitempty"`
 	Cpunumber             int               `json:"cpunumber,omitempty"`
 	Cpuused               string            `json:"cpuused,omitempty"`
 	Created               string            `json:"created,omitempty"`
@@ -1666,6 +1726,8 @@ type DeployVirtualMachineResponse struct {
 	Isoid                 string            `json:"isoid,omitempty"`
 	Isoname               string            `json:"isoname,omitempty"`
 	Keypair               string            `json:"keypair,omitempty"`
+	Laststartdate         string            `json:"laststartdate,omitempty"`
+	Laststartversion      string            `json:"laststartversion,omitempty"`
 	Maintenancepolicy     string            `json:"maintenancepolicy,omitempty"`
 	Manufacturerstring    string            `json:"manufacturerstring,omitempty"`
 	Memory                int               `json:"memory,omitempty"`
@@ -1774,7 +1836,7 @@ func (s *VirtualMachineService) NewDestroyVirtualMachineParams(id string) *Destr
 	return p
 }
 
-// Destroys a virtual machine. Once destroyed, only the administrator can recover it.
+// Destroys a virtual machine.
 func (s *VirtualMachineService) DestroyVirtualMachine(p *DestroyVirtualMachineParams) (*DestroyVirtualMachineResponse, error) {
 	resp, err := s.cs.newRequest("destroyVirtualMachine", p.toURLValues())
 	if err != nil {
@@ -1823,6 +1885,7 @@ type DestroyVirtualMachineResponse struct {
 		Type              string   `json:"type,omitempty"`
 		VirtualmachineIds []string `json:"virtualmachineIds,omitempty"`
 	} `json:"affinitygroup,omitempty"`
+	Bootmenutimeout       int64             `json:"bootmenutimeout,omitempty"`
 	Cpunumber             int               `json:"cpunumber,omitempty"`
 	Cpuused               string            `json:"cpuused,omitempty"`
 	Created               string            `json:"created,omitempty"`
@@ -1852,6 +1915,8 @@ type DestroyVirtualMachineResponse struct {
 	Isoid                 string            `json:"isoid,omitempty"`
 	Isoname               string            `json:"isoname,omitempty"`
 	Keypair               string            `json:"keypair,omitempty"`
+	Laststartdate         string            `json:"laststartdate,omitempty"`
+	Laststartversion      string            `json:"laststartversion,omitempty"`
 	Maintenancepolicy     string            `json:"maintenancepolicy,omitempty"`
 	Manufacturerstring    string            `json:"manufacturerstring,omitempty"`
 	Memory                int               `json:"memory,omitempty"`
@@ -2084,6 +2149,7 @@ type MigrateVirtualMachineResponse struct {
 		Type              string   `json:"type,omitempty"`
 		VirtualmachineIds []string `json:"virtualmachineIds,omitempty"`
 	} `json:"affinitygroup,omitempty"`
+	Bootmenutimeout       int64             `json:"bootmenutimeout,omitempty"`
 	Cpunumber             int               `json:"cpunumber,omitempty"`
 	Cpuused               string            `json:"cpuused,omitempty"`
 	Created               string            `json:"created,omitempty"`
@@ -2113,6 +2179,8 @@ type MigrateVirtualMachineResponse struct {
 	Isoid                 string            `json:"isoid,omitempty"`
 	Isoname               string            `json:"isoname,omitempty"`
 	Keypair               string            `json:"keypair,omitempty"`
+	Laststartdate         string            `json:"laststartdate,omitempty"`
+	Laststartversion      string            `json:"laststartversion,omitempty"`
 	Maintenancepolicy     string            `json:"maintenancepolicy,omitempty"`
 	Manufacturerstring    string            `json:"manufacturerstring,omitempty"`
 	Memory                int               `json:"memory,omitempty"`
@@ -2259,6 +2327,7 @@ type RebootVirtualMachineResponse struct {
 		Type              string   `json:"type,omitempty"`
 		VirtualmachineIds []string `json:"virtualmachineIds,omitempty"`
 	} `json:"affinitygroup,omitempty"`
+	Bootmenutimeout       int64             `json:"bootmenutimeout,omitempty"`
 	Cpunumber             int               `json:"cpunumber,omitempty"`
 	Cpuused               string            `json:"cpuused,omitempty"`
 	Created               string            `json:"created,omitempty"`
@@ -2288,6 +2357,8 @@ type RebootVirtualMachineResponse struct {
 	Isoid                 string            `json:"isoid,omitempty"`
 	Isoname               string            `json:"isoname,omitempty"`
 	Keypair               string            `json:"keypair,omitempty"`
+	Laststartdate         string            `json:"laststartdate,omitempty"`
+	Laststartversion      string            `json:"laststartversion,omitempty"`
 	Maintenancepolicy     string            `json:"maintenancepolicy,omitempty"`
 	Manufacturerstring    string            `json:"manufacturerstring,omitempty"`
 	Memory                int               `json:"memory,omitempty"`
@@ -2413,6 +2484,7 @@ type RecoverVirtualMachineResponse struct {
 		Type              string   `json:"type,omitempty"`
 		VirtualmachineIds []string `json:"virtualmachineIds,omitempty"`
 	} `json:"affinitygroup,omitempty"`
+	Bootmenutimeout       int64             `json:"bootmenutimeout,omitempty"`
 	Cpunumber             int               `json:"cpunumber,omitempty"`
 	Cpuused               string            `json:"cpuused,omitempty"`
 	Created               string            `json:"created,omitempty"`
@@ -2442,6 +2514,8 @@ type RecoverVirtualMachineResponse struct {
 	Isoid                 string            `json:"isoid,omitempty"`
 	Isoname               string            `json:"isoname,omitempty"`
 	Keypair               string            `json:"keypair,omitempty"`
+	Laststartdate         string            `json:"laststartdate,omitempty"`
+	Laststartversion      string            `json:"laststartversion,omitempty"`
 	Maintenancepolicy     string            `json:"maintenancepolicy,omitempty"`
 	Manufacturerstring    string            `json:"manufacturerstring,omitempty"`
 	Memory                int               `json:"memory,omitempty"`
@@ -2598,6 +2672,7 @@ type RestoreVirtualMachineResponse struct {
 		Type              string   `json:"type,omitempty"`
 		VirtualmachineIds []string `json:"virtualmachineIds,omitempty"`
 	} `json:"affinitygroup,omitempty"`
+	Bootmenutimeout       int64             `json:"bootmenutimeout,omitempty"`
 	Cpunumber             int               `json:"cpunumber,omitempty"`
 	Cpuused               string            `json:"cpuused,omitempty"`
 	Created               string            `json:"created,omitempty"`
@@ -2627,6 +2702,8 @@ type RestoreVirtualMachineResponse struct {
 	Isoid                 string            `json:"isoid,omitempty"`
 	Isoname               string            `json:"isoname,omitempty"`
 	Keypair               string            `json:"keypair,omitempty"`
+	Laststartdate         string            `json:"laststartdate,omitempty"`
+	Laststartversion      string            `json:"laststartversion,omitempty"`
 	Maintenancepolicy     string            `json:"maintenancepolicy,omitempty"`
 	Manufacturerstring    string            `json:"manufacturerstring,omitempty"`
 	Memory                int               `json:"memory,omitempty"`
@@ -2885,6 +2962,7 @@ type StartVirtualMachineResponse struct {
 		Type              string   `json:"type,omitempty"`
 		VirtualmachineIds []string `json:"virtualmachineIds,omitempty"`
 	} `json:"affinitygroup,omitempty"`
+	Bootmenutimeout       int64             `json:"bootmenutimeout,omitempty"`
 	Cpunumber             int               `json:"cpunumber,omitempty"`
 	Cpuused               string            `json:"cpuused,omitempty"`
 	Created               string            `json:"created,omitempty"`
@@ -2914,6 +2992,8 @@ type StartVirtualMachineResponse struct {
 	Isoid                 string            `json:"isoid,omitempty"`
 	Isoname               string            `json:"isoname,omitempty"`
 	Keypair               string            `json:"keypair,omitempty"`
+	Laststartdate         string            `json:"laststartdate,omitempty"`
+	Laststartversion      string            `json:"laststartversion,omitempty"`
 	Maintenancepolicy     string            `json:"maintenancepolicy,omitempty"`
 	Manufacturerstring    string            `json:"manufacturerstring,omitempty"`
 	Memory                int               `json:"memory,omitempty"`
@@ -3071,6 +3151,7 @@ type StopVirtualMachineResponse struct {
 		Type              string   `json:"type,omitempty"`
 		VirtualmachineIds []string `json:"virtualmachineIds,omitempty"`
 	} `json:"affinitygroup,omitempty"`
+	Bootmenutimeout       int64             `json:"bootmenutimeout,omitempty"`
 	Cpunumber             int               `json:"cpunumber,omitempty"`
 	Cpuused               string            `json:"cpuused,omitempty"`
 	Created               string            `json:"created,omitempty"`
@@ -3100,6 +3181,8 @@ type StopVirtualMachineResponse struct {
 	Isoid                 string            `json:"isoid,omitempty"`
 	Isoname               string            `json:"isoname,omitempty"`
 	Keypair               string            `json:"keypair,omitempty"`
+	Laststartdate         string            `json:"laststartdate,omitempty"`
+	Laststartversion      string            `json:"laststartversion,omitempty"`
 	Maintenancepolicy     string            `json:"maintenancepolicy,omitempty"`
 	Manufacturerstring    string            `json:"manufacturerstring,omitempty"`
 	Memory                int               `json:"memory,omitempty"`
@@ -3175,6 +3258,10 @@ func (p *UpdateVirtualMachineParams) toURLValues() url.Values {
 	if p.p == nil {
 		return u
 	}
+	if v, found := p.p["bootmenutimeout"]; found {
+		vv := strconv.FormatInt(v.(int64), 10)
+		u.Set("bootmenutimeout", vv)
+	}
 	if v, found := p.p["customid"]; found {
 		u.Set("customid", v.(string))
 	}
@@ -3233,6 +3320,13 @@ func (p *UpdateVirtualMachineParams) toURLValues() url.Values {
 		u.Set("userdata", v.(string))
 	}
 	return u
+}
+
+func (p *UpdateVirtualMachineParams) SetBootmenutimeout(v int64) {
+	if p.p == nil {
+		p.p = make(map[string]interface{})
+	}
+	p.p["bootmenutimeout"] = v
 }
 
 func (p *UpdateVirtualMachineParams) SetCustomid(v string) {
@@ -3384,6 +3478,7 @@ type UpdateVirtualMachineResponse struct {
 		Type              string   `json:"type,omitempty"`
 		VirtualmachineIds []string `json:"virtualmachineIds,omitempty"`
 	} `json:"affinitygroup,omitempty"`
+	Bootmenutimeout       int64             `json:"bootmenutimeout,omitempty"`
 	Cpunumber             int               `json:"cpunumber,omitempty"`
 	Cpuused               string            `json:"cpuused,omitempty"`
 	Created               string            `json:"created,omitempty"`
@@ -3413,6 +3508,8 @@ type UpdateVirtualMachineResponse struct {
 	Isoid                 string            `json:"isoid,omitempty"`
 	Isoname               string            `json:"isoname,omitempty"`
 	Keypair               string            `json:"keypair,omitempty"`
+	Laststartdate         string            `json:"laststartdate,omitempty"`
+	Laststartversion      string            `json:"laststartversion,omitempty"`
 	Maintenancepolicy     string            `json:"maintenancepolicy,omitempty"`
 	Manufacturerstring    string            `json:"manufacturerstring,omitempty"`
 	Memory                int               `json:"memory,omitempty"`
@@ -3585,6 +3682,7 @@ type MigrateVirtualMachineWithVolumeResponse struct {
 		Type              string   `json:"type,omitempty"`
 		VirtualmachineIds []string `json:"virtualmachineIds,omitempty"`
 	} `json:"affinitygroup,omitempty"`
+	Bootmenutimeout       int64             `json:"bootmenutimeout,omitempty"`
 	Cpunumber             int               `json:"cpunumber,omitempty"`
 	Cpuused               string            `json:"cpuused,omitempty"`
 	Created               string            `json:"created,omitempty"`
@@ -3614,6 +3712,8 @@ type MigrateVirtualMachineWithVolumeResponse struct {
 	Isoid                 string            `json:"isoid,omitempty"`
 	Isoname               string            `json:"isoname,omitempty"`
 	Keypair               string            `json:"keypair,omitempty"`
+	Laststartdate         string            `json:"laststartdate,omitempty"`
+	Laststartversion      string            `json:"laststartversion,omitempty"`
 	Maintenancepolicy     string            `json:"maintenancepolicy,omitempty"`
 	Manufacturerstring    string            `json:"manufacturerstring,omitempty"`
 	Memory                int               `json:"memory,omitempty"`
@@ -4142,6 +4242,7 @@ type VirtualMachine struct {
 		Type              string   `json:"type,omitempty"`
 		VirtualmachineIds []string `json:"virtualmachineIds,omitempty"`
 	} `json:"affinitygroup,omitempty"`
+	Bootmenutimeout       int64             `json:"bootmenutimeout,omitempty"`
 	Cpunumber             int               `json:"cpunumber,omitempty"`
 	Cpuused               string            `json:"cpuused,omitempty"`
 	Created               string            `json:"created,omitempty"`
@@ -4171,6 +4272,8 @@ type VirtualMachine struct {
 	Isoid                 string            `json:"isoid,omitempty"`
 	Isoname               string            `json:"isoname,omitempty"`
 	Keypair               string            `json:"keypair,omitempty"`
+	Laststartdate         string            `json:"laststartdate,omitempty"`
+	Laststartversion      string            `json:"laststartversion,omitempty"`
 	Maintenancepolicy     string            `json:"maintenancepolicy,omitempty"`
 	Manufacturerstring    string            `json:"manufacturerstring,omitempty"`
 	Memory                int               `json:"memory,omitempty"`
