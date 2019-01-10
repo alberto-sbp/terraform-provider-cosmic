@@ -85,24 +85,6 @@ func resourceCosmicInstance() *schema.Resource {
 				ConflictsWith: []string{"affinity_group_ids"},
 			},
 
-			"security_group_ids": {
-				Type:          schema.TypeSet,
-				Optional:      true,
-				ForceNew:      true,
-				Elem:          &schema.Schema{Type: schema.TypeString},
-				Set:           schema.HashString,
-				ConflictsWith: []string{"security_group_names"},
-			},
-
-			"security_group_names": {
-				Type:          schema.TypeSet,
-				Optional:      true,
-				ForceNew:      true,
-				Elem:          &schema.Schema{Type: schema.TypeString},
-				Set:           schema.HashString,
-				ConflictsWith: []string{"security_group_ids"},
-			},
-
 			"project": {
 				Type:     schema.TypeString,
 				Optional: true,
@@ -205,6 +187,12 @@ func resourceCosmicInstanceCreate(d *schema.ResourceData, meta interface{}) erro
 	// If there is a ipaddres supplied, add it to the parameter struct
 	if ipaddress, ok := d.GetOk("ip_address"); ok {
 		p.SetIpaddress(ipaddress.(string))
+	}
+
+	// If optimise_for is supplied add it to the parameter struct
+	if optimise_for, ok := d.GetOk("optimise_for"); ok {
+		// Param must be lowercase and capitalized
+		p.SetOptimisefor(strings.Title(strings.ToLower(optimise_for.(string))))
 	}
 
 	// If there is a group supplied, add it to the parameter struct
