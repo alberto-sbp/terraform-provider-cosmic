@@ -189,6 +189,12 @@ func resourceCosmicInstanceCreate(d *schema.ResourceData, meta interface{}) erro
 		p.SetIpaddress(ipaddress.(string))
 	}
 
+	// If optimise_for is supplied add it to the parameter struct
+	if optimise_for, ok := d.GetOk("optimise_for"); ok {
+		// Param must be lowercase and capitalized
+		p.SetOptimisefor(strings.Title(strings.ToLower(optimise_for.(string))))
+	}
+
 	// If there is a group supplied, add it to the parameter struct
 	if group, ok := d.GetOk("group"); ok {
 		p.SetGroup(group.(string))
