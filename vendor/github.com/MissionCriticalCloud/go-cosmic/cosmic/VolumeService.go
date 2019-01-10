@@ -256,7 +256,9 @@ type AttachVolumeResponse struct {
 	Deviceid                   int64  `json:"deviceid,omitempty"`
 	DiskBytesReadRate          int64  `json:"diskBytesReadRate,omitempty"`
 	DiskBytesWriteRate         int64  `json:"diskBytesWriteRate,omitempty"`
+	DiskIopsRatePerGb          bool   `json:"diskIopsRatePerGb,omitempty"`
 	DiskIopsReadRate           int64  `json:"diskIopsReadRate,omitempty"`
+	DiskIopsTotalRate          int64  `json:"diskIopsTotalRate,omitempty"`
 	DiskIopsWriteRate          int64  `json:"diskIopsWriteRate,omitempty"`
 	Diskcontroller             string `json:"diskcontroller,omitempty"`
 	Diskofferingdisplaytext    string `json:"diskofferingdisplaytext,omitempty"`
@@ -531,7 +533,9 @@ type CreateVolumeResponse struct {
 	Deviceid                   int64  `json:"deviceid,omitempty"`
 	DiskBytesReadRate          int64  `json:"diskBytesReadRate,omitempty"`
 	DiskBytesWriteRate         int64  `json:"diskBytesWriteRate,omitempty"`
+	DiskIopsRatePerGb          bool   `json:"diskIopsRatePerGb,omitempty"`
 	DiskIopsReadRate           int64  `json:"diskIopsReadRate,omitempty"`
+	DiskIopsTotalRate          int64  `json:"diskIopsTotalRate,omitempty"`
 	DiskIopsWriteRate          int64  `json:"diskIopsWriteRate,omitempty"`
 	Diskcontroller             string `json:"diskcontroller,omitempty"`
 	Diskofferingdisplaytext    string `json:"diskofferingdisplaytext,omitempty"`
@@ -733,7 +737,9 @@ type DetachVolumeResponse struct {
 	Deviceid                   int64  `json:"deviceid,omitempty"`
 	DiskBytesReadRate          int64  `json:"diskBytesReadRate,omitempty"`
 	DiskBytesWriteRate         int64  `json:"diskBytesWriteRate,omitempty"`
+	DiskIopsRatePerGb          bool   `json:"diskIopsRatePerGb,omitempty"`
 	DiskIopsReadRate           int64  `json:"diskIopsReadRate,omitempty"`
+	DiskIopsTotalRate          int64  `json:"diskIopsTotalRate,omitempty"`
 	DiskIopsWriteRate          int64  `json:"diskIopsWriteRate,omitempty"`
 	Diskcontroller             string `json:"diskcontroller,omitempty"`
 	Diskofferingdisplaytext    string `json:"diskofferingdisplaytext,omitempty"`
@@ -1002,7 +1008,9 @@ type MigrateVolumeResponse struct {
 	Deviceid                   int64  `json:"deviceid,omitempty"`
 	DiskBytesReadRate          int64  `json:"diskBytesReadRate,omitempty"`
 	DiskBytesWriteRate         int64  `json:"diskBytesWriteRate,omitempty"`
+	DiskIopsRatePerGb          bool   `json:"diskIopsRatePerGb,omitempty"`
 	DiskIopsReadRate           int64  `json:"diskIopsReadRate,omitempty"`
+	DiskIopsTotalRate          int64  `json:"diskIopsTotalRate,omitempty"`
 	DiskIopsWriteRate          int64  `json:"diskIopsWriteRate,omitempty"`
 	Diskcontroller             string `json:"diskcontroller,omitempty"`
 	Diskofferingdisplaytext    string `json:"diskofferingdisplaytext,omitempty"`
@@ -1188,7 +1196,9 @@ type ResizeVolumeResponse struct {
 	Deviceid                   int64  `json:"deviceid,omitempty"`
 	DiskBytesReadRate          int64  `json:"diskBytesReadRate,omitempty"`
 	DiskBytesWriteRate         int64  `json:"diskBytesWriteRate,omitempty"`
+	DiskIopsRatePerGb          bool   `json:"diskIopsRatePerGb,omitempty"`
 	DiskIopsReadRate           int64  `json:"diskIopsReadRate,omitempty"`
+	DiskIopsTotalRate          int64  `json:"diskIopsTotalRate,omitempty"`
 	DiskIopsWriteRate          int64  `json:"diskIopsWriteRate,omitempty"`
 	Diskcontroller             string `json:"diskcontroller,omitempty"`
 	Diskofferingdisplaytext    string `json:"diskofferingdisplaytext,omitempty"`
@@ -1390,7 +1400,9 @@ type UpdateVolumeResponse struct {
 	Deviceid                   int64  `json:"deviceid,omitempty"`
 	DiskBytesReadRate          int64  `json:"diskBytesReadRate,omitempty"`
 	DiskBytesWriteRate         int64  `json:"diskBytesWriteRate,omitempty"`
+	DiskIopsRatePerGb          bool   `json:"diskIopsRatePerGb,omitempty"`
 	DiskIopsReadRate           int64  `json:"diskIopsReadRate,omitempty"`
+	DiskIopsTotalRate          int64  `json:"diskIopsTotalRate,omitempty"`
 	DiskIopsWriteRate          int64  `json:"diskIopsWriteRate,omitempty"`
 	Diskcontroller             string `json:"diskcontroller,omitempty"`
 	Diskofferingdisplaytext    string `json:"diskofferingdisplaytext,omitempty"`
@@ -1615,7 +1627,9 @@ type UploadVolumeResponse struct {
 	Deviceid                   int64  `json:"deviceid,omitempty"`
 	DiskBytesReadRate          int64  `json:"diskBytesReadRate,omitempty"`
 	DiskBytesWriteRate         int64  `json:"diskBytesWriteRate,omitempty"`
+	DiskIopsRatePerGb          bool   `json:"diskIopsRatePerGb,omitempty"`
 	DiskIopsReadRate           int64  `json:"diskIopsReadRate,omitempty"`
+	DiskIopsTotalRate          int64  `json:"diskIopsTotalRate,omitempty"`
 	DiskIopsWriteRate          int64  `json:"diskIopsWriteRate,omitempty"`
 	Diskcontroller             string `json:"diskcontroller,omitempty"`
 	Diskofferingdisplaytext    string `json:"diskofferingdisplaytext,omitempty"`
@@ -2016,7 +2030,9 @@ type Volume struct {
 	Deviceid                   int64  `json:"deviceid,omitempty"`
 	DiskBytesReadRate          int64  `json:"diskBytesReadRate,omitempty"`
 	DiskBytesWriteRate         int64  `json:"diskBytesWriteRate,omitempty"`
+	DiskIopsRatePerGb          bool   `json:"diskIopsRatePerGb,omitempty"`
 	DiskIopsReadRate           int64  `json:"diskIopsReadRate,omitempty"`
+	DiskIopsTotalRate          int64  `json:"diskIopsTotalRate,omitempty"`
 	DiskIopsWriteRate          int64  `json:"diskIopsWriteRate,omitempty"`
 	Diskcontroller             string `json:"diskcontroller,omitempty"`
 	Diskofferingdisplaytext    string `json:"diskofferingdisplaytext,omitempty"`

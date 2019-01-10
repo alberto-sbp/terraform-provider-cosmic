@@ -115,6 +115,7 @@ type AttachIsoResponse struct {
 		Type              string   `json:"type,omitempty"`
 		VirtualmachineIds []string `json:"virtualmachineIds,omitempty"`
 	} `json:"affinitygroup,omitempty"`
+	Bootmenutimeout       int64             `json:"bootmenutimeout,omitempty"`
 	Cpunumber             int               `json:"cpunumber,omitempty"`
 	Cpuused               string            `json:"cpuused,omitempty"`
 	Created               string            `json:"created,omitempty"`
@@ -144,6 +145,8 @@ type AttachIsoResponse struct {
 	Isoid                 string            `json:"isoid,omitempty"`
 	Isoname               string            `json:"isoname,omitempty"`
 	Keypair               string            `json:"keypair,omitempty"`
+	Laststartdate         string            `json:"laststartdate,omitempty"`
+	Laststartversion      string            `json:"laststartversion,omitempty"`
 	Maintenancepolicy     string            `json:"maintenancepolicy,omitempty"`
 	Manufacturerstring    string            `json:"manufacturerstring,omitempty"`
 	Memory                int               `json:"memory,omitempty"`
@@ -262,7 +265,7 @@ func (s *ISOService) NewCopyIsoParams(destzoneid string, id string) *CopyIsoPara
 	return p
 }
 
-// Copies an ISO from one zone to another.
+// Copies an iso from one zone to another.
 func (s *ISOService) CopyIso(p *CopyIsoParams) (*CopyIsoResponse, error) {
 	resp, err := s.cs.newRequest("copyIso", p.toURLValues())
 	if err != nil {
@@ -509,6 +512,7 @@ type DetachIsoResponse struct {
 		Type              string   `json:"type,omitempty"`
 		VirtualmachineIds []string `json:"virtualmachineIds,omitempty"`
 	} `json:"affinitygroup,omitempty"`
+	Bootmenutimeout       int64             `json:"bootmenutimeout,omitempty"`
 	Cpunumber             int               `json:"cpunumber,omitempty"`
 	Cpuused               string            `json:"cpuused,omitempty"`
 	Created               string            `json:"created,omitempty"`
@@ -538,6 +542,8 @@ type DetachIsoResponse struct {
 	Isoid                 string            `json:"isoid,omitempty"`
 	Isoname               string            `json:"isoname,omitempty"`
 	Keypair               string            `json:"keypair,omitempty"`
+	Laststartdate         string            `json:"laststartdate,omitempty"`
+	Laststartversion      string            `json:"laststartversion,omitempty"`
 	Maintenancepolicy     string            `json:"maintenancepolicy,omitempty"`
 	Manufacturerstring    string            `json:"manufacturerstring,omitempty"`
 	Memory                int               `json:"memory,omitempty"`

@@ -841,6 +841,7 @@ type RevertToVMSnapshotResponse struct {
 		Type              string   `json:"type,omitempty"`
 		VirtualmachineIds []string `json:"virtualmachineIds,omitempty"`
 	} `json:"affinitygroup,omitempty"`
+	Bootmenutimeout       int64             `json:"bootmenutimeout,omitempty"`
 	Cpunumber             int               `json:"cpunumber,omitempty"`
 	Cpuused               string            `json:"cpuused,omitempty"`
 	Created               string            `json:"created,omitempty"`
@@ -870,6 +871,8 @@ type RevertToVMSnapshotResponse struct {
 	Isoid                 string            `json:"isoid,omitempty"`
 	Isoname               string            `json:"isoname,omitempty"`
 	Keypair               string            `json:"keypair,omitempty"`
+	Laststartdate         string            `json:"laststartdate,omitempty"`
+	Laststartversion      string            `json:"laststartversion,omitempty"`
 	Maintenancepolicy     string            `json:"maintenancepolicy,omitempty"`
 	Manufacturerstring    string            `json:"manufacturerstring,omitempty"`
 	Memory                int               `json:"memory,omitempty"`

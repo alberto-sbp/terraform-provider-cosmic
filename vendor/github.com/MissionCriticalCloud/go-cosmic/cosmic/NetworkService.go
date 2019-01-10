@@ -45,6 +45,12 @@ func (p *CreateNetworkParams) toURLValues() url.Values {
 	if v, found := p.p["cidr"]; found {
 		u.Set("cidr", v.(string))
 	}
+	if v, found := p.p["dhcpbootfilename"]; found {
+		u.Set("dhcpbootfilename", v.(string))
+	}
+	if v, found := p.p["dhcptftpserver"]; found {
+		u.Set("dhcptftpserver", v.(string))
+	}
 	if v, found := p.p["displaynetwork"]; found {
 		vv := strconv.FormatBool(v.(bool))
 		u.Set("displaynetwork", vv)
@@ -148,6 +154,20 @@ func (p *CreateNetworkParams) SetCidr(v string) {
 		p.p = make(map[string]interface{})
 	}
 	p.p["cidr"] = v
+}
+
+func (p *CreateNetworkParams) SetDhcpbootfilename(v string) {
+	if p.p == nil {
+		p.p = make(map[string]interface{})
+	}
+	p.p["dhcpbootfilename"] = v
+}
+
+func (p *CreateNetworkParams) SetDhcptftpserver(v string) {
+	if p.p == nil {
+		p.p = make(map[string]interface{})
+	}
+	p.p["dhcptftpserver"] = v
 }
 
 func (p *CreateNetworkParams) SetDisplaynetwork(v bool) {
@@ -357,6 +377,8 @@ type CreateNetworkResponse struct {
 	Broadcasturi                string `json:"broadcasturi,omitempty"`
 	Canusefordeploy             bool   `json:"canusefordeploy,omitempty"`
 	Cidr                        string `json:"cidr,omitempty"`
+	Dhcpbootfilename            string `json:"dhcpbootfilename,omitempty"`
+	Dhcptftpserver              string `json:"dhcptftpserver,omitempty"`
 	Displaynetwork              bool   `json:"displaynetwork,omitempty"`
 	Displaytext                 string `json:"displaytext,omitempty"`
 	Dns1                        string `json:"dns1,omitempty"`
@@ -644,6 +666,12 @@ func (p *UpdateNetworkParams) toURLValues() url.Values {
 	if v, found := p.p["customid"]; found {
 		u.Set("customid", v.(string))
 	}
+	if v, found := p.p["dhcpbootfilename"]; found {
+		u.Set("dhcpbootfilename", v.(string))
+	}
+	if v, found := p.p["dhcptftpserver"]; found {
+		u.Set("dhcptftpserver", v.(string))
+	}
 	if v, found := p.p["displaynetwork"]; found {
 		vv := strconv.FormatBool(v.(bool))
 		u.Set("displaynetwork", vv)
@@ -690,6 +718,20 @@ func (p *UpdateNetworkParams) SetCustomid(v string) {
 		p.p = make(map[string]interface{})
 	}
 	p.p["customid"] = v
+}
+
+func (p *UpdateNetworkParams) SetDhcpbootfilename(v string) {
+	if p.p == nil {
+		p.p = make(map[string]interface{})
+	}
+	p.p["dhcpbootfilename"] = v
+}
+
+func (p *UpdateNetworkParams) SetDhcptftpserver(v string) {
+	if p.p == nil {
+		p.p = make(map[string]interface{})
+	}
+	p.p["dhcptftpserver"] = v
 }
 
 func (p *UpdateNetworkParams) SetDisplaynetwork(v bool) {
@@ -815,6 +857,8 @@ type UpdateNetworkResponse struct {
 	Broadcasturi                string `json:"broadcasturi,omitempty"`
 	Canusefordeploy             bool   `json:"canusefordeploy,omitempty"`
 	Cidr                        string `json:"cidr,omitempty"`
+	Dhcpbootfilename            string `json:"dhcpbootfilename,omitempty"`
+	Dhcptftpserver              string `json:"dhcptftpserver,omitempty"`
 	Displaynetwork              bool   `json:"displaynetwork,omitempty"`
 	Displaytext                 string `json:"displaytext,omitempty"`
 	Dns1                        string `json:"dns1,omitempty"`
@@ -1794,6 +1838,8 @@ type Network struct {
 	Broadcasturi                string `json:"broadcasturi,omitempty"`
 	Canusefordeploy             bool   `json:"canusefordeploy,omitempty"`
 	Cidr                        string `json:"cidr,omitempty"`
+	Dhcpbootfilename            string `json:"dhcpbootfilename,omitempty"`
+	Dhcptftpserver              string `json:"dhcptftpserver,omitempty"`
 	Displaynetwork              bool   `json:"displaynetwork,omitempty"`
 	Displaytext                 string `json:"displaytext,omitempty"`
 	Dns1                        string `json:"dns1,omitempty"`
@@ -2006,6 +2052,8 @@ type NiciraNvpDeviceNetwork struct {
 	Broadcasturi                string `json:"broadcasturi,omitempty"`
 	Canusefordeploy             bool   `json:"canusefordeploy,omitempty"`
 	Cidr                        string `json:"cidr,omitempty"`
+	Dhcpbootfilename            string `json:"dhcpbootfilename,omitempty"`
+	Dhcptftpserver              string `json:"dhcptftpserver,omitempty"`
 	Displaynetwork              bool   `json:"displaynetwork,omitempty"`
 	Displaytext                 string `json:"displaytext,omitempty"`
 	Dns1                        string `json:"dns1,omitempty"`

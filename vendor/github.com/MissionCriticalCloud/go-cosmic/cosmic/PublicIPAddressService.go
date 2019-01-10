@@ -692,7 +692,7 @@ func (s *PublicIPAddressService) GetPublicIpAddressByID(id string, opts ...Optio
 	return nil, l.Count, fmt.Errorf("There is more then one result for PublicIpAddress UUID: %s!", id)
 }
 
-// Lists all public IP addresses
+// Lists all public ip addresses
 func (s *PublicIPAddressService) ListPublicIpAddresses(p *ListPublicIpAddressesParams) (*ListPublicIpAddressesResponse, error) {
 	var r ListPublicIpAddressesResponse
 	for page := 2; ; page++ {
