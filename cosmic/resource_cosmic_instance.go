@@ -120,6 +120,9 @@ func resourceCosmicInstance() *schema.Resource {
 			"optimise_for": {
 				Type:     schema.TypeString,
 				Optional: true,
+				StateFunc: func(val interface{}) string {
+					return strings.Title(strings.ToLower(val.(string)))
+				},
 			},
 
 			"expunge": {
