@@ -10,7 +10,7 @@ builds:
     goarch:
       - amd64
 archive:
-  name_template: "{{ .Binary }}-{{ .Tag }}_{{ .Os }}_{{ .Arch }}"
+  name_template: "{{ .Binary }}_{{ .Tag }}_{{ .Os }}_{{ .Arch }}"
   format: binary
 checksum:
   name_template: "{{ .ProjectName }}_{{ .Tag }}_checksums.txt"
