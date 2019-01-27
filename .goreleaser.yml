@@ -18,7 +18,3 @@ release:
   draft: true
   prerelease: false
   name_template: "{{ .Tag }}"
-changelog:
-  filters:
-    exclude:
-      - '(?!Merge pull request)'
