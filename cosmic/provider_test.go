@@ -117,6 +117,9 @@ func testAccPreCheck(t *testing.T) {
 	if v := os.Getenv("COSMIC_VPC_NETWORK_CIDR"); v == "" {
 		t.Fatal("COSMIC_VPC_NETWORK_CIDR must be set for acceptance tests")
 	}
+	if v := os.Getenv("COSMIC_VPC_NETWORK_DNS"); v == "" {
+		t.Fatal("COSMIC_VPC_NETWORK_DNS must be set for acceptance tests")
+	}
 	if v := os.Getenv("COSMIC_VPC_NETWORK_GATEWAY"); v == "" {
 		t.Fatal("COSMIC_VPC_NETWORK_GATEWAY must be set for acceptance tests")
 	}
