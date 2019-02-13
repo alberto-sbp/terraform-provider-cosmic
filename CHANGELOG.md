@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## Unreleased
+
+- Add option to configure provider using `COSMIC_CONFIG` and `COSMIC_PROFILE` environment variables
+
 ## 0.1.0 (2019-01-27)
 
 First versioned release.
