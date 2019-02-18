@@ -40,7 +40,6 @@ func resourceCosmicVPC() *schema.Resource {
 			"vpc_offering": &schema.Schema{
 				Type:     schema.TypeString,
 				Required: true,
-				ForceNew: true,
 			},
 
 			"network_domain": &schema.Schema{
@@ -248,6 +247,17 @@ func resourceCosmicVPCUpdate(d *schema.ResourceData, meta interface{}) error {
 
 		// Set the new display text
 		p.SetSyslogserverlist(syslogserverlist.(string))
+	}
+
+	// Check if the VPC offering is changed
+	if d.HasChange("vpc_offering") {
+		// Retrieve the VPC offering ID
+		o, _, err := cs.VPC.GetVPCOfferingByName(d.Get("vpc_offering").(string))
+		if err != nil {
+			return err
+		}
+		// Set the new VPC offering ID
+		p.SetVpcofferingid(o.Id)
 	}
 
 	// Update the VPC

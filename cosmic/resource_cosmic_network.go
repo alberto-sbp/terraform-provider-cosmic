@@ -108,7 +108,6 @@ func resourceCosmicNetwork() *schema.Resource {
 			"ip_exclusion_list": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
-				ForceNew: true,
 			},
 
 			"project": &schema.Schema{
