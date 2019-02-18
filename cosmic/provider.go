@@ -1,10 +1,11 @@
 package cosmic
 
 import (
+	"errors"
+
+	"github.com/go-ini/ini"
 	"github.com/hashicorp/terraform/helper/schema"
 	"github.com/hashicorp/terraform/terraform"
-	"errors"
-	"github.com/go-ini/ini"
 )
 
 // Provider returns a terraform.ResourceProvider.
@@ -47,12 +48,14 @@ func Provider() terraform.ResourceProvider {
 			"config": {
 				Type:          schema.TypeString,
 				Optional:      true,
+				DefaultFunc:   schema.EnvDefaultFunc("COSMIC_CONFIG", nil),
 				ConflictsWith: []string{"api_url", "api_key", "secret_key"},
 			},
 
 			"profile": {
 				Type:          schema.TypeString,
 				Optional:      true,
+				DefaultFunc:   schema.EnvDefaultFunc("COSMIC_PROFILE", nil),
 				ConflictsWith: []string{"api_url", "api_key", "secret_key"},
 			},
 		},
