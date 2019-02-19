@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - Add option to configure provider using `COSMIC_CONFIG` and `COSMIC_PROFILE` environment variables
 - Changing `cosmic_network`'s `ip_exclusion_list` option no longer recreates the resource
 - Changing `cosmic_vpc`'s `vpc_offering` option no longer recreates the resource
+- Removed `cosmic_egress_firewall` and `cosmic_firewall` resources; no longer implemented by the Cosmic API
 
 ## 0.1.0 (2019-01-27)
 

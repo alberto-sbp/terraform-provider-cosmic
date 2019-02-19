@@ -63,8 +63,6 @@ func Provider() terraform.ResourceProvider {
 		ResourcesMap: map[string]*schema.Resource{
 			"cosmic_affinity_group":       resourceCosmicAffinityGroup(),
 			"cosmic_disk":                 resourceCosmicDisk(),
-			"cosmic_egress_firewall":      resourceCosmicEgressFirewall(),
-			"cosmic_firewall":             resourceCosmicFirewall(),
 			"cosmic_instance":             resourceCosmicInstance(),
 			"cosmic_ipaddress":            resourceCosmicIPAddress(),
 			"cosmic_loadbalancer_rule":    resourceCosmicLoadBalancerRule(),
