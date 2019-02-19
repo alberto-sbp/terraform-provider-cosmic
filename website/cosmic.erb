@@ -1,0 +1,102 @@
+<% wrap_layout :inner do %>
+    <% content_for :sidebar do %>
+        <div class="docs-sidebar hidden-print affix-top" role="complementary">
+            <ul class="nav docs-sidenav">
+                <li<%= sidebar_current("docs-home") %>>
+                    <a href="/docs/providers/index.html">All Providers</a>
+                </li>
+
+                <li<%= sidebar_current("docs-cosmic-index") %>>
+                    <a href="/docs/providers/cosmic/index.html">Cosmic Provider</a>
+                </li>
+
+                <li<%= sidebar_current("docs-cosmic-resource") %>>
+                    <a href="#">Resources</a>
+                    <ul class="nav nav-visible">
+                        <li<%= sidebar_current("docs-cosmic-affinity-group") %>>
+                        <a href="/docs/providers/cosmic/r/affinity_group.html">cosmic_affinity_group</a>
+                        </li>
+
+                        <li<%= sidebar_current("docs-cosmic-resource-disk") %>>
+                        <a href="/docs/providers/cosmic/r/disk.html">cosmic_disk</a>
+                        </li>
+
+                        <li<%= sidebar_current("docs-cosmic-resource-instance") %>>
+                            <a href="/docs/providers/cosmic/r/instance.html">cosmic_instance</a>
+                        </li>
+
+                        <li<%= sidebar_current("docs-cosmic-resource-ipaddress") %>>
+                            <a href="/docs/providers/cosmic/r/ipaddress.html">cosmic_ipaddress</a>
+                        </li>
+
+                        <li<%= sidebar_current("docs-cosmic-resource-loadbalancer-rule") %>>
+                            <a href="/docs/providers/cosmic/r/loadbalancer_rule.html">cosmic_loadbalancer_rule</a>
+                        </li>
+
+                        <li<%= sidebar_current("docs-cosmic-resource-network") %>>
+                            <a href="/docs/providers/cosmic/r/network.html">cosmic_network</a>
+                        </li>
+
+                        <li<%= sidebar_current("docs-cosmic-resource-network-acl") %>>
+                            <a href="/docs/providers/cosmic/r/network_acl.html">cosmic_network_acl</a>
+                        </li>
+
+                        <li<%= sidebar_current("docs-cosmic-resource-network-acl-rule") %>>
+                            <a href="/docs/providers/cosmic/r/network_acl_rule.html">cosmic_network_acl_rule</a>
+                        </li>
+
+                        <li<%= sidebar_current("docs-cosmic-resource-nic") %>>
+                            <a href="/docs/providers/cosmic/r/nic.html">cosmic_nic</a>
+                        </li>
+
+                        <li<%= sidebar_current("docs-cosmic-resource-port-forward") %>>
+                            <a href="/docs/providers/cosmic/r/port_forward.html">cosmic_port_forward</a>
+                        </li>
+
+                        <li<%= sidebar_current("docs-cosmic-resource-private-gateway") %>>
+                            <a href="/docs/providers/cosmic/r/private_gateway.html">cosmic_private_gateway</a>
+                        </li>
+
+                        <li<%= sidebar_current("docs-cosmic-resource-secondary-ipaddress") %>>
+                            <a href="/docs/providers/cosmic/r/secondary_ipaddress.html">cosmic_secondary_ipaddress</a>
+                        </li>
+
+                        <li<%= sidebar_current("docs-cosmic-resource-ssh-keypair") %>>
+                            <a href="/docs/providers/cosmic/r/ssh_keypair.html">cosmic_ssh_keypair</a>
+                        </li>
+
+                        <li<%= sidebar_current("docs-cosmic-resource-static-nat") %>>
+                            <a href="/docs/providers/cosmic/r/static_nat.html">cosmic_static_nat</a>
+                        </li>
+
+                        <li<%= sidebar_current("docs-cosmic-resource-static-route") %>>
+                            <a href="/docs/providers/cosmic/r/static_route.html">cosmic_static_route</a>
+                        </li>
+
+                        <li<%= sidebar_current("docs-cosmic-resource-template") %>>
+                            <a href="/docs/providers/cosmic/r/template.html">cosmic_template</a>
+                        </li>
+
+                        <li<%= sidebar_current("docs-cosmic-resource-vpc") %>>
+                            <a href="/docs/providers/cosmic/r/vpc.html">cosmic_vpc</a>
+                        </li>
+
+                        <li<%= sidebar_current("docs-cosmic-resource-vpn-gateway") %>>
+                            <a href="/docs/providers/cosmic/r/vpn_gateway.html">cosmic_vpn_gateway</a>
+                        </li>
+
+                        <li<%= sidebar_current("docs-cosmic-resource-vpn-customer-gateway") %>>
+                            <a href="/docs/providers/cosmic/r/vpn_customer_gateway.html">cosmic_vpn_customer_gateway</a>
+                        </li>
+
+                        <li<%= sidebar_current("docs-cosmic-resource-vpn-connection") %>>
+                            <a href="/docs/providers/cosmic/r/vpn_connection.html">cosmic_vpn_connection</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    <% end %>
+
+    <%= yield %>
+<% end %>
