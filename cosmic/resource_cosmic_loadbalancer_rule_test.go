@@ -241,25 +241,24 @@ func testAccCheckCosmicLoadBalancerRuleDestroy(s *terraform.State) error {
 }
 
 var testAccCosmicLoadBalancerRule_basic = fmt.Sprintf(`
-resource "cosmic_instance" "foobar1" {
-  name = "terraform-server1"
-  display_name = "terraform"
-  service_offering= "%s"
-  network_id = "%s"
-  template = "%s"
-  zone = "%s"
-  expunge = true
+resource "cosmic_instance" "foo1" {
+  name             = "terraform-server1"
+  display_name     = "terraform"
+  service_offering = "%s"
+  network_id       = "%s"
+  template         = "%s"
+  zone             = "%s"
+  expunge          = true
 }
 
 resource "cosmic_loadbalancer_rule" "foo" {
-  name = "terraform-lb"
+  name          = "terraform-lb"
   ip_address_id = "%s"
-  algorithm = "roundrobin"
-  public_port = 80
-  private_port = 80
-  member_ids = ["${cosmic_instance.foobar1.id}"]
-}
-`,
+  algorithm     = "roundrobin"
+  public_port   = 80
+  private_port  = 80
+  member_ids    = ["${cosmic_instance.foo1.id}"]
+}`,
 	COSMIC_SERVICE_OFFERING_1,
 	COSMIC_NETWORK_1,
 	COSMIC_TEMPLATE,
@@ -267,25 +266,24 @@ resource "cosmic_loadbalancer_rule" "foo" {
 	COSMIC_PUBLIC_IPADDRESS)
 
 var testAccCosmicLoadBalancerRule_update = fmt.Sprintf(`
-resource "cosmic_instance" "foobar1" {
-  name = "terraform-server1"
-  display_name = "terraform"
-  service_offering= "%s"
-  network_id = "%s"
-  template = "%s"
-  zone = "%s"
-  expunge = true
+resource "cosmic_instance" "foo1" {
+  name             = "terraform-server1"
+  display_name     = "terraform"
+  service_offering = "%s"
+  network_id       = "%s"
+  template         = "%s"
+  zone             = "%s"
+  expunge          = true
 }
 
 resource "cosmic_loadbalancer_rule" "foo" {
-  name = "terraform-lb-update"
+  name          = "terraform-lb-update"
   ip_address_id = "%s"
-  algorithm = "leastconn"
-  public_port = 80
-  private_port = 80
-  member_ids = ["${cosmic_instance.foobar1.id}"]
-}
-`,
+  algorithm     = "leastconn"
+  public_port   = 80
+  private_port  = 80
+  member_ids    = ["${cosmic_instance.foo1.id}"]
+}`,
 	COSMIC_SERVICE_OFFERING_1,
 	COSMIC_NETWORK_1,
 	COSMIC_TEMPLATE,
@@ -293,26 +291,25 @@ resource "cosmic_loadbalancer_rule" "foo" {
 	COSMIC_PUBLIC_IPADDRESS)
 
 var testAccCosmicLoadBalancerRule_forcenew = fmt.Sprintf(`
-resource "cosmic_instance" "foobar1" {
-  name = "terraform-server1"
-  display_name = "terraform"
-  service_offering= "%s"
-  network_id = "%s"
-  template = "%s"
-  zone = "%s"
-  expunge = true
+resource "cosmic_instance" "foo1" {
+  name             = "terraform-server1"
+  display_name     = "terraform"
+  service_offering = "%s"
+  network_id       = "%s"
+  template         = "%s"
+  zone             = "%s"
+  expunge          = true
 }
 
 resource "cosmic_loadbalancer_rule" "foo" {
-  name = "terraform-lb-update"
+  name          = "terraform-lb-update"
   ip_address_id = "%s"
-  algorithm = "leastconn"
-  public_port = 443
-  private_port = 443
-  protocol = "tcp-proxy"
-  member_ids = ["${cosmic_instance.foobar1.id}"]
-}
-`,
+  algorithm     = "leastconn"
+  public_port   = 443
+  private_port  = 443
+  protocol      = "tcp-proxy"
+  member_ids    = ["${cosmic_instance.foo1.id}"]
+}`,
 	COSMIC_SERVICE_OFFERING_1,
 	COSMIC_NETWORK_1,
 	COSMIC_TEMPLATE,
@@ -320,44 +317,44 @@ resource "cosmic_loadbalancer_rule" "foo" {
 	COSMIC_PUBLIC_IPADDRESS)
 
 var testAccCosmicLoadBalancerRule_vpc = fmt.Sprintf(`
-resource "cosmic_vpc" "foobar" {
-	name = "terraform-vpc"
-	cidr = "%s"
-	vpc_offering = "%s"
-	zone = "%s"
+resource "cosmic_vpc" "foo" {
+  name         = "terraform-vpc"
+  cidr         = "%s"
+  vpc_offering = "%s"
+  zone         = "%s"
 }
 
 resource "cosmic_network" "foo" {
-  name = "terraform-network"
-  cidr = "%s"
-  gateway = "%s"
+  name             = "terraform-network"
+  cidr             = "%s"
+  gateway          = "%s"
   network_offering = "%s"
-  vpc_id = "${cosmic_vpc.foobar.id}"
-  zone = "${cosmic_vpc.foobar.zone}"
+  vpc_id           = "${cosmic_vpc.foo.id}"
+  zone             = "${cosmic_vpc.foo.zone}"
 }
 
 resource "cosmic_ipaddress" "foo" {
-  vpc_id = "${cosmic_vpc.foobar.id}"
+  vpc_id = "${cosmic_vpc.foo.id}"
 }
 
-resource "cosmic_instance" "foobar1" {
-  name = "terraform-server1"
-  display_name = "terraform"
-  service_offering= "%s"
-  network_id = "${cosmic_network.foo.id}"
-  template = "%s"
-  zone = "${cosmic_network.foo.zone}"
-  expunge = true
+resource "cosmic_instance" "foo1" {
+  name             = "terraform-server1"
+  display_name     = "terraform"
+  service_offering = "%s"
+  network_id       = "${cosmic_network.foo.id}"
+  template         = "%s"
+  zone             = "${cosmic_network.foo.zone}"
+  expunge          = true
 }
 
 resource "cosmic_loadbalancer_rule" "foo" {
-  name = "terraform-lb"
+  name          = "terraform-lb"
   ip_address_id = "${cosmic_ipaddress.foo.id}"
-  algorithm = "roundrobin"
-  network_id = "${cosmic_network.foo.id}"
-  public_port = 80
-  private_port = 80
-  member_ids = ["${cosmic_instance.foobar1.id}"]
+  algorithm     = "roundrobin"
+  network_id    = "${cosmic_network.foo.id}"
+  public_port   = 80
+  private_port  = 80
+  member_ids    = ["${cosmic_instance.foo1.id}"]
 }`,
 	COSMIC_VPC_CIDR_1,
 	COSMIC_VPC_OFFERING,
@@ -369,54 +366,54 @@ resource "cosmic_loadbalancer_rule" "foo" {
 	COSMIC_TEMPLATE)
 
 var testAccCosmicLoadBalancerRule_vpc_update = fmt.Sprintf(`
-resource "cosmic_vpc" "foobar" {
-  name = "terraform-vpc"
-  cidr = "%s"
+resource "cosmic_vpc" "foo" {
+  name         = "terraform-vpc"
+  cidr         = "%s"
   vpc_offering = "%s"
-  zone = "%s"
+  zone         = "%s"
 }
 
 resource "cosmic_network" "foo" {
-  name = "terraform-network"
-  cidr = "%s"
-  gateway = "%s"
+  name             = "terraform-network"
+  cidr             = "%s"
+  gateway          = "%s"
   network_offering = "%s"
-  vpc_id = "${cosmic_vpc.foobar.id}"
-  zone = "${cosmic_vpc.foobar.zone}"
+  vpc_id           = "${cosmic_vpc.foo.id}"
+  zone             = "${cosmic_vpc.foo.zone}"
 }
 
 resource "cosmic_ipaddress" "foo" {
-  vpc_id = "${cosmic_vpc.foobar.id}"
+  vpc_id = "${cosmic_vpc.foo.id}"
 }
 
-resource "cosmic_instance" "foobar1" {
-  name = "terraform-server1"
-  display_name = "terraform"
-  service_offering= "%s"
-  network_id = "${cosmic_network.foo.id}"
-  template = "%s"
-  zone = "${cosmic_network.foo.zone}"
-  expunge = true
+resource "cosmic_instance" "foo1" {
+  name             = "terraform-server1"
+  display_name     = "terraform"
+  service_offering = "%s"
+  network_id       = "${cosmic_network.foo.id}"
+  template         = "%s"
+  zone             = "${cosmic_network.foo.zone}"
+  expunge          = true
 }
 
-resource "cosmic_instance" "foobar2" {
-  name = "terraform-server2"
-  display_name = "terraform"
-  service_offering= "%s"
-  network_id = "${cosmic_network.foo.id}"
-  template = "%s"
-  zone = "${cosmic_network.foo.zone}"
-  expunge = true
+resource "cosmic_instance" "foo2" {
+  name             = "terraform-server2"
+  display_name     = "terraform"
+  service_offering = "%s"
+  network_id       = "${cosmic_network.foo.id}"
+  template         = "%s"
+  zone             = "${cosmic_network.foo.zone}"
+  expunge          = true
 }
 
 resource "cosmic_loadbalancer_rule" "foo" {
-  name = "terraform-lb-update"
+  name          = "terraform-lb-update"
   ip_address_id = "${cosmic_ipaddress.foo.id}"
-  algorithm = "leastconn"
-  network_id = "${cosmic_network.foo.id}"
-  public_port = 443
-  private_port = 443
-  member_ids = ["${cosmic_instance.foobar1.id}", "${cosmic_instance.foobar2.id}"]
+  algorithm     = "leastconn"
+  network_id    = "${cosmic_network.foo.id}"
+  public_port   = 443
+  private_port  = 443
+  member_ids    = ["${cosmic_instance.foo1.id}", "${cosmic_instance.foo2.id}"]
 }`,
 	COSMIC_VPC_CIDR_1,
 	COSMIC_VPC_OFFERING,

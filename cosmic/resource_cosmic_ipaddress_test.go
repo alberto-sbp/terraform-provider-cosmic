@@ -116,15 +116,15 @@ resource "cosmic_ipaddress" "foo" {
 }`, COSMIC_NETWORK_1)
 
 var testAccCosmicIPAddress_vpc = fmt.Sprintf(`
-resource "cosmic_vpc" "foobar" {
-  name = "terraform-vpc"
-  cidr = "%s"
+resource "cosmic_vpc" "foo" {
+  name         = "terraform-vpc"
+  cidr         = "%s"
   vpc_offering = "%s"
-  zone = "%s"
+  zone         = "%s"
 }
 
 resource "cosmic_ipaddress" "foo" {
-  vpc_id = "${cosmic_vpc.foobar.id}"
+  vpc_id = "${cosmic_vpc.foo.id}"
 }`,
 	COSMIC_VPC_CIDR_1,
 	COSMIC_VPC_OFFERING,

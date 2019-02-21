@@ -209,42 +209,42 @@ func testAccCheckCosmicNetworkACLRuleDestroy(s *terraform.State) error {
 }
 
 var testAccCosmicNetworkACLRule_basic = fmt.Sprintf(`
-resource "cosmic_vpc" "foobar" {
-  name = "terraform-vpc"
-  cidr = "%s"
+resource "cosmic_vpc" "foo" {
+  name         = "terraform-vpc"
+  cidr         = "%s"
   vpc_offering = "%s"
-  zone = "%s"
+  zone         = "%s"
 }
 
 resource "cosmic_network_acl" "foo" {
-  name = "terraform-acl"
+  name        = "terraform-acl"
   description = "terraform-acl-text"
-  vpc_id = "${cosmic_vpc.foobar.id}"
+  vpc_id      = "${cosmic_vpc.foo.id}"
 }
 
 resource "cosmic_network_acl_rule" "foo" {
   acl_id = "${cosmic_network_acl.foo.id}"
 
   rule {
-  	action = "allow"
-    cidr_list = ["172.18.100.0/24"]
-    protocol = "all"
+    action       = "allow"
+    cidr_list    = ["172.18.100.0/24"]
+    protocol     = "all"
     traffic_type = "ingress"
   }
 
   rule {
-  	action = "allow"
-    cidr_list = ["172.18.100.0/24"]
-    protocol = "icmp"
-    icmp_type = "-1"
-    icmp_code = "-1"
+    action       = "allow"
+    cidr_list    = ["172.18.100.0/24"]
+    protocol     = "icmp"
+    icmp_type    = "-1"
+    icmp_code    = "-1"
     traffic_type = "ingress"
   }
 
   rule {
-    cidr_list = ["172.16.100.0/24"]
-    protocol = "tcp"
-    ports = ["80", "443"]
+    cidr_list    = ["172.16.100.0/24"]
+    protocol     = "tcp"
+    ports        = ["80", "443"]
     traffic_type = "ingress"
   }
 }`,
@@ -253,51 +253,51 @@ resource "cosmic_network_acl_rule" "foo" {
 	COSMIC_ZONE)
 
 var testAccCosmicNetworkACLRule_update = fmt.Sprintf(`
-resource "cosmic_vpc" "foobar" {
-  name = "terraform-vpc"
-  cidr = "%s"
+resource "cosmic_vpc" "foo" {
+  name         = "terraform-vpc"
+  cidr         = "%s"
   vpc_offering = "%s"
-  zone = "%s"
+  zone         = "%s"
 }
 
 resource "cosmic_network_acl" "foo" {
-  name = "terraform-acl"
+  name        = "terraform-acl"
   description = "terraform-acl-text"
-  vpc_id = "${cosmic_vpc.foobar.id}"
+  vpc_id      = "${cosmic_vpc.foo.id}"
 }
 
 resource "cosmic_network_acl_rule" "foo" {
   acl_id = "${cosmic_network_acl.foo.id}"
 
   rule {
-  	action = "deny"
-    cidr_list = ["172.18.100.0/24"]
-    protocol = "all"
+    action       = "deny"
+    cidr_list    = ["172.18.100.0/24"]
+    protocol     = "all"
     traffic_type = "ingress"
   }
 
   rule {
-  	action = "deny"
-		cidr_list = ["172.18.100.0/24", "172.18.101.0/24"]
-    protocol = "icmp"
-    icmp_type = "-1"
-    icmp_code = "-1"
+    action       = "deny"
+    cidr_list    = ["172.18.100.0/24", "172.18.101.0/24"]
+    protocol     = "icmp"
+    icmp_type    = "-1"
+    icmp_code    = "-1"
     traffic_type = "ingress"
   }
 
   rule {
-	  action = "allow"
-    cidr_list = ["172.18.100.0/24"]
-    protocol = "tcp"
-    ports = ["80", "443"]
+    action       = "allow"
+    cidr_list    = ["172.18.100.0/24"]
+    protocol     = "tcp"
+    ports        = ["80", "443"]
     traffic_type = "ingress"
   }
 
   rule {
-	  action = "deny"
-    cidr_list = ["10.0.0.0/24"]
-    protocol = "tcp"
-    ports = ["80", "1000-2000"]
+    action       = "deny"
+    cidr_list    = ["10.0.0.0/24"]
+    protocol     = "tcp"
+    ports        = ["80", "1000-2000"]
     traffic_type = "egress"
   }
 }`,

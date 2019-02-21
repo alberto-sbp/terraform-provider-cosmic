@@ -100,6 +100,6 @@ func testAccCheckCosmicAffinityGroupDestroy(s *terraform.State) error {
 
 var testAccCosmicAffinityGroup = fmt.Sprintf(`
 resource "cosmic_affinity_group" "foo" {
-	name = "terraform-affinity-group"
-	type = "host anti-affinity"
+  name = "terraform-affinity-group"
+  type = "host anti-affinity"
 }`)

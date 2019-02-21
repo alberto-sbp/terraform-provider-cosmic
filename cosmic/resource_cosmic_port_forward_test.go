@@ -121,23 +121,23 @@ func testAccCheckCosmicPortForwardDestroy(s *terraform.State) error {
 }
 
 var testAccCosmicPortForward_basic = fmt.Sprintf(`
-resource "cosmic_instance" "foobar" {
-  name = "terraform-test"
-  service_offering= "%s"
-  network_id = "%s"
-  template = "%s"
-  zone = "%s"
-  expunge = true
+resource "cosmic_instance" "foo" {
+  name             = "terraform-test"
+  service_offering = "%s"
+  network_id       = "%s"
+  template         = "%s"
+  zone             = "%s"
+  expunge          = true
 }
 
 resource "cosmic_port_forward" "foo" {
   ip_address_id = "%s"
 
   forward {
-    protocol = "tcp"
-    private_port = 443
-    public_port = 8443
-    virtual_machine_id = "${cosmic_instance.foobar.id}"
+    protocol           = "tcp"
+    private_port       = 443
+    public_port        = 8443
+    virtual_machine_id = "${cosmic_instance.foo.id}"
   }
 }`,
 	COSMIC_SERVICE_OFFERING_1,
@@ -147,30 +147,30 @@ resource "cosmic_port_forward" "foo" {
 	COSMIC_PUBLIC_IPADDRESS)
 
 var testAccCosmicPortForward_update = fmt.Sprintf(`
-resource "cosmic_instance" "foobar" {
-  name = "terraform-test"
-  service_offering= "%s"
-  network_id = "%s"
-  template = "%s"
-  zone = "%s"
-  expunge = true
+resource "cosmic_instance" "foo" {
+  name             = "terraform-test"
+  service_offering = "%s"
+  network_id       = "%s"
+  template         = "%s"
+  zone             = "%s"
+  expunge          = true
 }
 
 resource "cosmic_port_forward" "foo" {
   ip_address_id = "%s"
 
   forward {
-    protocol = "tcp"
-    private_port = 443
-    public_port = 8443
-    virtual_machine_id = "${cosmic_instance.foobar.id}"
+    protocol           = "tcp"
+    private_port       = 443
+    public_port        = 8443
+    virtual_machine_id = "${cosmic_instance.foo.id}"
   }
 
   forward {
-    protocol = "tcp"
-    private_port = 80
-    public_port = 8080
-    virtual_machine_id = "${cosmic_instance.foobar.id}"
+    protocol           = "tcp"
+    private_port       = 80
+    public_port        = 8080
+    virtual_machine_id = "${cosmic_instance.foo.id}"
   }
 }`,
 	COSMIC_SERVICE_OFFERING_1,

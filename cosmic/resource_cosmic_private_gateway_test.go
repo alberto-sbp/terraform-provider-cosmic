@@ -90,30 +90,30 @@ func testAccCheckCosmicPrivateGatewayDestroy(s *terraform.State) error {
 }
 
 var testAccCosmicPrivateGateway_basic = fmt.Sprintf(`
-resource "cosmic_vpc" "foobar" {
-	name = "terraform-vpc"
-	cidr = "%s"
-	vpc_offering = "%s"
-	zone = "%s"
+resource "cosmic_vpc" "foo" {
+  name         = "terraform-vpc"
+  cidr         = "%s"
+  vpc_offering = "%s"
+  zone         = "%s"
 }
 
 resource "cosmic_network" "foo" {
-	name = "terraform-network"
-	cidr = "%s"
-	network_offering = "%s"
-	zone = "${cosmic_vpc.foobar.zone}"
+  name             = "terraform-network"
+  cidr             = "%s"
+  network_offering = "%s"
+  zone             = "${cosmic_vpc.foo.zone}"
 }
 
 resource "cosmic_network_acl" "foo" {
-	name = "terraform-acl"
-	vpc_id = "${cosmic_vpc.foobar.id}"
+  name   = "terraform-acl"
+  vpc_id = "${cosmic_vpc.foo.id}"
 }
 
 resource "cosmic_private_gateway" "foo" {
-	ip_address = "%s"
-	network_id = "${cosmic_network.foo.id}"
-	acl_id = "${cosmic_network_acl.foo.id}"
-	vpc_id = "${cosmic_vpc.foobar.id}"
+  ip_address = "%s"
+  network_id = "${cosmic_network.foo.id}"
+  acl_id     = "${cosmic_network_acl.foo.id}"
+  vpc_id     = "${cosmic_vpc.foo.id}"
 }`,
 	COSMIC_VPC_CIDR_1,
 	COSMIC_VPC_OFFERING,

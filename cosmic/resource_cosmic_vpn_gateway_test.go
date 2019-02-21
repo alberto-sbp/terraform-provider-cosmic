@@ -80,11 +80,11 @@ func testAccCheckCosmicVPNGatewayDestroy(s *terraform.State) error {
 
 var testAccCosmicVPNGateway_basic = fmt.Sprintf(`
 resource "cosmic_vpc" "foo" {
-  name = "terraform-vpc"
+  name         = "terraform-vpc"
   display_text = "terraform-vpc-text"
-  cidr = "%s"
+  cidr         = "%s"
   vpc_offering = "%s"
-  zone = "%s"
+  zone         = "%s"
 }
 
 resource "cosmic_vpn_gateway" "foo" {

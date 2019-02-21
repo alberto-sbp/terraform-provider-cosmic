@@ -96,27 +96,26 @@ func testAccCheckCosmicStaticNATDestroy(s *terraform.State) error {
 }
 
 var testAccCosmicStaticNAT_basic = fmt.Sprintf(`
-resource "cosmic_instance" "foobar" {
-  name = "terraform-test"
-  display_name = "terraform-test"
-  service_offering= "%s"
-  network_id = "%s"
-  template = "%s"
-  zone = "%s"
-  user_data = "foobar\nfoo\nbar"
-  expunge = true
+resource "cosmic_instance" "foo" {
+  name             = "terraform-test"
+  display_name     = "terraform-test"
+  service_offering = "%s"
+  network_id       = "%s"
+  template         = "%s"
+  zone             = "%s"
+  user_data        = "foobar\nfoo\nbar"
+  expunge          = true
 }
 
 resource "cosmic_ipaddress" "foo" {
-  network_id = "${cosmic_instance.foobar.network_id}"
+  network_id = "${cosmic_instance.foo.network_id}"
 }
 
 resource "cosmic_static_nat" "foo" {
-	ip_address_id = "${cosmic_ipaddress.foo.id}"
-  virtual_machine_id = "${cosmic_instance.foobar.id}"
+  ip_address_id      = "${cosmic_ipaddress.foo.id}"
+  virtual_machine_id = "${cosmic_instance.foo.id}"
 }`,
 	COSMIC_SERVICE_OFFERING_1,
 	COSMIC_NETWORK_1,
 	COSMIC_TEMPLATE,
-	COSMIC_ZONE,
-)
+	COSMIC_ZONE)

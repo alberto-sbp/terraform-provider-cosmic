@@ -160,14 +160,13 @@ func testAccCheckCosmicTemplateDestroy(s *terraform.State) error {
 
 var testAccCosmicTemplate_basic = fmt.Sprintf(`
 resource "cosmic_template" "foo" {
-  name = "terraform-test"
-	format = "%s"
+  name       = "terraform-test"
+  format     = "%s"
   hypervisor = "%s"
-	os_type = "%s"
-	url = "%s"
-  zone = "%s"
-}
-`,
+  os_type    = "%s"
+  url        = "%s"
+  zone       = "%s"
+}`,
 	COSMIC_TEMPLATE_FORMAT,
 	COSMIC_HYPERVISOR,
 	COSMIC_TEMPLATE_OS_TYPE,
@@ -176,17 +175,16 @@ resource "cosmic_template" "foo" {
 
 var testAccCosmicTemplate_update = fmt.Sprintf(`
 resource "cosmic_template" "foo" {
-	name = "terraform-test"
-  display_text = "terraform-updated"
-	format = "%s"
-  hypervisor = "%s"
-  os_type = "%s"
-	url = "%s"
-  zone = "%s"
+  name                    = "terraform-test"
+  display_text            = "terraform-updated"
+  format                  = "%s"
+  hypervisor              = "%s"
+  os_type                 = "%s"
+  url                     = "%s"
+  zone                    = "%s"
   is_dynamically_scalable = true
-	password_enabled = true
-}
-`,
+  password_enabled        = true
+}`,
 	COSMIC_TEMPLATE_FORMAT,
 	COSMIC_HYPERVISOR,
 	COSMIC_TEMPLATE_OS_TYPE,

@@ -21,10 +21,10 @@ func TestAccCosmicInstance_basic(t *testing.T) {
 				Config: testAccCosmicInstance_basic,
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckCosmicInstanceExists(
-						"cosmic_instance.foobar", &instance),
+						"cosmic_instance.foo", &instance),
 					testAccCheckCosmicInstanceAttributes(&instance),
 					resource.TestCheckResourceAttr(
-						"cosmic_instance.foobar", "user_data", "0cf3dcdc356ec8369494cb3991985ecd5296cdd5"),
+						"cosmic_instance.foo", "user_data", "0cf3dcdc356ec8369494cb3991985ecd5296cdd5"),
 				),
 			},
 		},
@@ -43,10 +43,10 @@ func TestAccCosmicInstance_update(t *testing.T) {
 				Config: testAccCosmicInstance_basic,
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckCosmicInstanceExists(
-						"cosmic_instance.foobar", &instance),
+						"cosmic_instance.foo", &instance),
 					testAccCheckCosmicInstanceAttributes(&instance),
 					resource.TestCheckResourceAttr(
-						"cosmic_instance.foobar", "user_data", "0cf3dcdc356ec8369494cb3991985ecd5296cdd5"),
+						"cosmic_instance.foo", "user_data", "0cf3dcdc356ec8369494cb3991985ecd5296cdd5"),
 				),
 			},
 
@@ -54,14 +54,14 @@ func TestAccCosmicInstance_update(t *testing.T) {
 				Config: testAccCosmicInstance_renameAndResize,
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckCosmicInstanceExists(
-						"cosmic_instance.foobar", &instance),
+						"cosmic_instance.foo", &instance),
 					testAccCheckCosmicInstanceRenamedAndResized(&instance),
 					resource.TestCheckResourceAttr(
-						"cosmic_instance.foobar", "name", "terraform-updated"),
+						"cosmic_instance.foo", "name", "terraform-updated"),
 					resource.TestCheckResourceAttr(
-						"cosmic_instance.foobar", "display_name", "terraform-updated"),
+						"cosmic_instance.foo", "display_name", "terraform-updated"),
 					resource.TestCheckResourceAttr(
-						"cosmic_instance.foobar", "service_offering", COSMIC_SERVICE_OFFERING_2),
+						"cosmic_instance.foo", "service_offering", COSMIC_SERVICE_OFFERING_2),
 				),
 			},
 		},
@@ -80,9 +80,9 @@ func TestAccCosmicInstance_fixedIP(t *testing.T) {
 				Config: testAccCosmicInstance_fixedIP,
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckCosmicInstanceExists(
-						"cosmic_instance.foobar", &instance),
+						"cosmic_instance.foo", &instance),
 					resource.TestCheckResourceAttr(
-						"cosmic_instance.foobar", "ip_address", COSMIC_NETWORK_1_IPADDRESS1),
+						"cosmic_instance.foo", "ip_address", COSMIC_NETWORK_1_IPADDRESS_1),
 				),
 			},
 		},
@@ -101,9 +101,9 @@ func TestAccCosmicInstance_keyPair(t *testing.T) {
 				Config: testAccCosmicInstance_keyPair,
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckCosmicInstanceExists(
-						"cosmic_instance.foobar", &instance),
+						"cosmic_instance.foo", &instance),
 					resource.TestCheckResourceAttr(
-						"cosmic_instance.foobar", "keypair", "terraform-test-keypair"),
+						"cosmic_instance.foo", "keypair", "terraform-test-keypair"),
 				),
 			},
 		},
@@ -122,9 +122,9 @@ func TestAccCosmicInstance_project(t *testing.T) {
 				Config: testAccCosmicInstance_project,
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckCosmicInstanceExists(
-						"cosmic_instance.foobar", &instance),
+						"cosmic_instance.foo", &instance),
 					resource.TestCheckResourceAttr(
-						"cosmic_instance.foobar", "project", COSMIC_PROJECT_NAME),
+						"cosmic_instance.foo", "project", COSMIC_PROJECT_NAME),
 				),
 			},
 		},
@@ -230,15 +230,15 @@ func testAccCheckCosmicInstanceDestroy(s *terraform.State) error {
 }
 
 var testAccCosmicInstance_basic = fmt.Sprintf(`
-resource "cosmic_instance" "foobar" {
-  name = "terraform-test"
-  display_name = "terraform-test"
-  service_offering= "%s"
-  network_id = "%s"
-  template = "%s"
-  zone = "%s"
-  user_data = "foobar\nfoo\nbar"
-  expunge = true
+resource "cosmic_instance" "foo" {
+  name             = "terraform-test"
+  display_name     = "terraform-test"
+  service_offering = "%s"
+  network_id       = "%s"
+  template         = "%s"
+  zone             = "%s"
+  user_data        = "foobar\nfoo\nbar"
+  expunge          = true
 }`,
 	COSMIC_SERVICE_OFFERING_1,
 	COSMIC_NETWORK_1,
@@ -246,15 +246,15 @@ resource "cosmic_instance" "foobar" {
 	COSMIC_ZONE)
 
 var testAccCosmicInstance_renameAndResize = fmt.Sprintf(`
-resource "cosmic_instance" "foobar" {
-  name = "terraform-updated"
-  display_name = "terraform-updated"
-  service_offering= "%s"
-  network_id = "%s"
-  template = "%s"
-  zone = "%s"
-  user_data = "foobar\nfoo\nbar"
-  expunge = true
+resource "cosmic_instance" "foo" {
+  name             = "terraform-updated"
+  display_name     = "terraform-updated"
+  service_offering = "%s"
+  network_id       = "%s"
+  template         = "%s"
+  zone             = "%s"
+  user_data        = "foobar\nfoo\nbar"
+  expunge          = true
 }`,
 	COSMIC_SERVICE_OFFERING_2,
 	COSMIC_NETWORK_1,
@@ -262,15 +262,15 @@ resource "cosmic_instance" "foobar" {
 	COSMIC_ZONE)
 
 var testAccCosmicInstance_fixedIP = fmt.Sprintf(`
-resource "cosmic_instance" "foobar" {
-  name = "terraform-test"
-  display_name = "terraform-test"
-  service_offering= "%s"
-  network_id = "%s"
-  ip_address = "%s"
-  template = "%s"
-  zone = "%s"
-  expunge = true
+resource "cosmic_instance" "foo" {
+  name             = "terraform-test"
+  display_name     = "terraform-test"
+  service_offering = "%s"
+  network_id       = "%s"
+  ip_address       = "%s"
+  template         = "%s"
+  zone             = "%s"
+  expunge          = true
 }`,
 	COSMIC_SERVICE_OFFERING_1,
 	COSMIC_NETWORK_1,
@@ -283,16 +283,16 @@ resource "cosmic_ssh_keypair" "foo" {
   name = "terraform-test-keypair"
 }
 
-resource "cosmic_instance" "foobar" {
-  name = "terraform-test"
-  display_name = "terraform-test"
-  service_offering= "%s"
-  network_id = "%s"
-  ip_address = "%s"
-  template = "%s"
-  zone = "%s"
-	keypair = "${cosmic_ssh_keypair.foo.name}"
-  expunge = true
+resource "cosmic_instance" "foo" {
+  name             = "terraform-test"
+  display_name     = "terraform-test"
+  service_offering = "%s"
+  network_id       = "%s"
+  ip_address       = "%s"
+  template         = "%s"
+  zone             = "%s"
+  keypair          = "${cosmic_ssh_keypair.foo.name}"
+  expunge          = true
 }`,
 	COSMIC_SERVICE_OFFERING_1,
 	COSMIC_NETWORK_1,
@@ -301,15 +301,15 @@ resource "cosmic_instance" "foobar" {
 	COSMIC_ZONE)
 
 var testAccCosmicInstance_project = fmt.Sprintf(`
-resource "cosmic_instance" "foobar" {
-  name = "terraform-test"
-  display_name = "terraform-test"
-  service_offering= "%s"
-	network_id = "%s"
-  template = "%s"
-	project = "%s"
-  zone = "%s"
-  expunge = true
+resource "cosmic_instance" "foo" {
+  name             = "terraform-test"
+  display_name     = "terraform-test"
+  service_offering = "%s"
+  network_id       = "%s"
+  template         = "%s"
+  project          = "%s"
+  zone             = "%s"
+  expunge          = true
 }`,
 	COSMIC_SERVICE_OFFERING_1,
 	COSMIC_PROJECT_NETWORK,

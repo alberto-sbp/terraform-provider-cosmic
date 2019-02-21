@@ -21,7 +21,7 @@ func TestAccCosmicNIC_basic(t *testing.T) {
 				Config: testAccCosmicNIC_basic,
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckCosmicNICExists(
-						"cosmic_instance.foobar", "cosmic_nic.foo", &nic),
+						"cosmic_instance.foo", "cosmic_nic.foo", &nic),
 					testAccCheckCosmicNICAttributes(&nic),
 				),
 			},
@@ -41,7 +41,7 @@ func TestAccCosmicNIC_update(t *testing.T) {
 				Config: testAccCosmicNIC_basic,
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckCosmicNICExists(
-						"cosmic_instance.foobar", "cosmic_nic.foo", &nic),
+						"cosmic_instance.foo", "cosmic_nic.foo", &nic),
 					testAccCheckCosmicNICAttributes(&nic),
 				),
 			},
@@ -50,7 +50,7 @@ func TestAccCosmicNIC_update(t *testing.T) {
 				Config: testAccCosmicNIC_ipaddress,
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckCosmicNICExists(
-						"cosmic_instance.foobar", "cosmic_nic.foo", &nic),
+						"cosmic_instance.foo", "cosmic_nic.foo", &nic),
 					testAccCheckCosmicNICIPAddress(&nic),
 					resource.TestCheckResourceAttr(
 						"cosmic_nic.foo", "ip_address", COSMIC_2ND_NIC_IPADDRESS),
@@ -150,19 +150,19 @@ func testAccCheckCosmicNICDestroy(s *terraform.State) error {
 }
 
 var testAccCosmicNIC_basic = fmt.Sprintf(`
-resource "cosmic_instance" "foobar" {
-  name = "terraform-test"
-  display_name = "terraform"
-  service_offering= "%s"
-  network_id = "%s"
-  template = "%s"
-  zone = "%s"
-  expunge = true
+resource "cosmic_instance" "foo" {
+  name             = "terraform-test"
+  display_name     = "terraform"
+  service_offering = "%s"
+  network_id       = "%s"
+  template         = "%s"
+  zone             = "%s"
+  expunge          = true
 }
 
 resource "cosmic_nic" "foo" {
-  network_id = "%s"
-  virtual_machine_id = "${cosmic_instance.foobar.id}"
+  network_id         = "%s"
+  virtual_machine_id = "${cosmic_instance.foo.id}"
 }`,
 	COSMIC_SERVICE_OFFERING_1,
 	COSMIC_NETWORK_1,
@@ -171,20 +171,20 @@ resource "cosmic_nic" "foo" {
 	COSMIC_2ND_NIC_NETWORK)
 
 var testAccCosmicNIC_ipaddress = fmt.Sprintf(`
-resource "cosmic_instance" "foobar" {
-  name = "terraform-test"
-  display_name = "terraform"
-  service_offering= "%s"
-  network_id = "%s"
-  template = "%s"
-  zone = "%s"
-  expunge = true
+resource "cosmic_instance" "foo" {
+  name             = "terraform-test"
+  display_name     = "terraform"
+  service_offering = "%s"
+  network_id       = "%s"
+  template         = "%s"
+  zone             = "%s"
+  expunge          = true
 }
 
 resource "cosmic_nic" "foo" {
-  network_id = "%s"
-  ip_address = "%s"
-  virtual_machine_id = "${cosmic_instance.foobar.id}"
+  network_id         = "%s"
+  ip_address         = "%s"
+  virtual_machine_id = "${cosmic_instance.foo.id}"
 }`,
 	COSMIC_SERVICE_OFFERING_1,
 	COSMIC_NETWORK_1,

@@ -164,6 +164,6 @@ resource "cosmic_ssh_keypair" "foo" {
 
 var testAccCosmicSSHKeyPair_register = fmt.Sprintf(`
 resource "cosmic_ssh_keypair" "foo" {
-  name = "terraform-test-keypair"
+  name       = "terraform-test-keypair"
   public_key = "%s"
 }`, COSMIC_SSH_PUBLIC_KEY)

@@ -94,17 +94,17 @@ func testAccCheckCosmicNetworkACLDestroy(s *terraform.State) error {
 }
 
 var testAccCosmicNetworkACL_basic = fmt.Sprintf(`
-resource "cosmic_vpc" "foobar" {
-  name = "terraform-vpc"
-  cidr = "%s"
+resource "cosmic_vpc" "foo" {
+  name         = "terraform-vpc"
+  cidr         = "%s"
   vpc_offering = "%s"
-  zone = "%s"
+  zone         = "%s"
 }
 
 resource "cosmic_network_acl" "foo" {
-  name = "terraform-acl"
+  name        = "terraform-acl"
   description = "terraform-acl-text"
-  vpc_id = "${cosmic_vpc.foobar.id}"
+  vpc_id      = "${cosmic_vpc.foo.id}"
 }`,
 	COSMIC_VPC_CIDR_1,
 	COSMIC_VPC_OFFERING,

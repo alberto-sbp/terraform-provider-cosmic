@@ -162,32 +162,32 @@ func testAccCheckCosmicDiskDestroy(s *terraform.State) error {
 
 var testAccCosmicDisk_basic = fmt.Sprintf(`
 resource "cosmic_disk" "foo" {
-  name = "terraform-disk"
-  attach = false
+  name          = "terraform-disk"
+  attach        = false
   disk_offering = "%s"
-  zone = "%s"
+  zone          = "%s"
 }`,
 	COSMIC_DISK_OFFERING_1,
 	COSMIC_ZONE)
 
 var testAccCosmicDisk_deviceID = fmt.Sprintf(`
-resource "cosmic_instance" "foobar" {
-  name = "terraform-test"
-  display_name = "terraform"
-  service_offering= "%s"
-  network_id = "%s"
-  template = "%s"
-  zone = "%s"
-  expunge = true
+resource "cosmic_instance" "foo" {
+  name             = "terraform-test"
+  display_name     = "terraform"
+  service_offering = "%s"
+  network_id       = "%s"
+  template         = "%s"
+  zone             = "%s"
+  expunge          = true
 }
 
 resource "cosmic_disk" "foo" {
-  name = "terraform-disk"
-  attach = true
-  device_id = 4
-  disk_offering = "%s"
-  virtual_machine_id = "${cosmic_instance.foobar.id}"
-  zone = "${cosmic_instance.foobar.zone}"
+  name               = "terraform-disk"
+  attach             = true
+  device_id          = 4
+  disk_offering      = "%s"
+  virtual_machine_id = "${cosmic_instance.foo.id}"
+  zone               = "${cosmic_instance.foo.zone}"
 }`,
 	COSMIC_SERVICE_OFFERING_1,
 	COSMIC_NETWORK_1,
@@ -196,22 +196,22 @@ resource "cosmic_disk" "foo" {
 	COSMIC_DISK_OFFERING_1)
 
 var testAccCosmicDisk_update = fmt.Sprintf(`
-resource "cosmic_instance" "foobar" {
-  name = "terraform-test"
-  display_name = "terraform"
-  service_offering= "%s"
-  network_id = "%s"
-  template = "%s"
-  zone = "%s"
-  expunge = true
+resource "cosmic_instance" "foo" {
+  name             = "terraform-test"
+  display_name     = "terraform"
+  service_offering = "%s"
+  network_id       = "%s"
+  template         = "%s"
+  zone             = "%s"
+  expunge          = true
 }
 
 resource "cosmic_disk" "foo" {
-  name = "terraform-disk"
-  attach = true
-  disk_offering = "%s"
-  virtual_machine_id = "${cosmic_instance.foobar.id}"
-  zone = "${cosmic_instance.foobar.zone}"
+  name               = "terraform-disk"
+  attach             = true
+  disk_offering      = "%s"
+  virtual_machine_id = "${cosmic_instance.foo.id}"
+  zone               = "${cosmic_instance.foo.zone}"
 }`,
 	COSMIC_SERVICE_OFFERING_1,
 	COSMIC_NETWORK_1,
@@ -220,22 +220,22 @@ resource "cosmic_disk" "foo" {
 	COSMIC_DISK_OFFERING_1)
 
 var testAccCosmicDisk_resize = fmt.Sprintf(`
-resource "cosmic_instance" "foobar" {
-  name = "terraform-test"
-  display_name = "terraform"
-  service_offering= "%s"
-  network_id = "%s"
-  template = "%s"
-  zone = "%s"
-  expunge = true
+resource "cosmic_instance" "foo" {
+  name             = "terraform-test"
+  display_name     = "terraform"
+  service_offering = "%s"
+  network_id       = "%s"
+  template         = "%s"
+  zone             = "%s"
+  expunge          = true
 }
 
 resource "cosmic_disk" "foo" {
-  name = "terraform-disk"
-  attach = true
-  disk_offering = "%s"
-	virtual_machine_id = "${cosmic_instance.foobar.id}"
-  zone = "${cosmic_instance.foobar.zone}"
+  name               = "terraform-disk"
+  attach             = true
+  disk_offering      = "%s"
+  virtual_machine_id = "${cosmic_instance.foo.id}"
+  zone               = "${cosmic_instance.foo.zone}"
 }`,
 	COSMIC_SERVICE_OFFERING_1,
 	COSMIC_NETWORK_1,
