@@ -17,7 +17,7 @@ func TestAccCosmicAffinityGroup_basic(t *testing.T) {
 		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckCosmicAffinityGroupDestroy,
 		Steps: []resource.TestStep{
-			resource.TestStep{
+			{
 				Config: testAccCosmicAffinityGroup,
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckCosmicAffinityGroupExists("cosmic_affinity_group.foo", &affinityGroup),
@@ -98,8 +98,8 @@ func testAccCheckCosmicAffinityGroupDestroy(s *terraform.State) error {
 	return nil
 }
 
-var testAccCosmicAffinityGroup = fmt.Sprintf(`
+const testAccCosmicAffinityGroup = `
 resource "cosmic_affinity_group" "foo" {
   name = "terraform-affinity-group"
   type = "host anti-affinity"
-}`)
+}`

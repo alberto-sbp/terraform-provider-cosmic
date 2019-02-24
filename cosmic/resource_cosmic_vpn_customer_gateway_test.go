@@ -17,7 +17,7 @@ func TestAccCosmicVPNCustomerGateway_basic(t *testing.T) {
 		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckCosmicVPNCustomerGatewayDestroy,
 		Steps: []resource.TestStep{
-			resource.TestStep{
+			{
 				Config: testAccCosmicVPNCustomerGateway_basic,
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckCosmicVPNCustomerGatewayExists(
@@ -28,54 +28,9 @@ func TestAccCosmicVPNCustomerGateway_basic(t *testing.T) {
 					resource.TestCheckResourceAttr(
 						"cosmic_vpn_customer_gateway.bar", "name", "terraform-bar"),
 					resource.TestCheckResourceAttr(
-						"cosmic_vpn_customer_gateway.foo", "ike_policy", "aes256-sha1"),
-					resource.TestCheckResourceAttr(
 						"cosmic_vpn_customer_gateway.bar", "esp_policy", "aes256-sha1"),
-				),
-			},
-		},
-	})
-}
-
-func TestAccCosmicVPNCustomerGateway_update(t *testing.T) {
-	var vpnCustomerGateway cosmic.VpnCustomerGateway
-
-	resource.Test(t, resource.TestCase{
-		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
-		CheckDestroy: testAccCheckCosmicVPNCustomerGatewayDestroy,
-		Steps: []resource.TestStep{
-			resource.TestStep{
-				Config: testAccCosmicVPNCustomerGateway_basic,
-				Check: resource.ComposeTestCheckFunc(
-					testAccCheckCosmicVPNCustomerGatewayExists(
-						"cosmic_vpn_customer_gateway.foo", &vpnCustomerGateway),
-					testAccCheckCosmicVPNCustomerGatewayAttributes(&vpnCustomerGateway),
 					resource.TestCheckResourceAttr(
-						"cosmic_vpn_customer_gateway.foo", "name", "terraform-foo"),
-					resource.TestCheckResourceAttr(
-						"cosmic_vpn_customer_gateway.bar", "name", "terraform-bar"),
-					resource.TestCheckResourceAttr(
-						"cosmic_vpn_customer_gateway.foo", "ike_policy", "aes256-sha1"),
-					resource.TestCheckResourceAttr(
-						"cosmic_vpn_customer_gateway.bar", "esp_policy", "aes256-sha1"),
-				),
-			},
-
-			resource.TestStep{
-				Config: testAccCosmicVPNCustomerGateway_update,
-				Check: resource.ComposeTestCheckFunc(
-					testAccCheckCosmicVPNCustomerGatewayExists(
-						"cosmic_vpn_customer_gateway.foo", &vpnCustomerGateway),
-					testAccCheckCosmicVPNCustomerGatewayUpdatedAttributes(&vpnCustomerGateway),
-					resource.TestCheckResourceAttr(
-						"cosmic_vpn_customer_gateway.foo", "name", "terraform-foo-bar"),
-					resource.TestCheckResourceAttr(
-						"cosmic_vpn_customer_gateway.bar", "name", "terraform-bar-foo"),
-					resource.TestCheckResourceAttr(
-						"cosmic_vpn_customer_gateway.foo", "ike_policy", "3des-md5"),
-					resource.TestCheckResourceAttr(
-						"cosmic_vpn_customer_gateway.bar", "esp_policy", "3des-md5"),
+						"cosmic_vpn_customer_gateway.foo", "ike_policy", "aes256-sha1;modp1024"),
 				),
 			},
 		},
@@ -119,27 +74,7 @@ func testAccCheckCosmicVPNCustomerGatewayAttributes(
 			return fmt.Errorf("Bad ESP policy: %s", vpnCustomerGateway.Esppolicy)
 		}
 
-		if vpnCustomerGateway.Ikepolicy != "aes256-sha1" {
-			return fmt.Errorf("Bad IKE policy: %s", vpnCustomerGateway.Ikepolicy)
-		}
-
-		if vpnCustomerGateway.Ipsecpsk != "terraform" {
-			return fmt.Errorf("Bad IPSEC pre-shared key: %s", vpnCustomerGateway.Ipsecpsk)
-		}
-
-		return nil
-	}
-}
-
-func testAccCheckCosmicVPNCustomerGatewayUpdatedAttributes(
-	vpnCustomerGateway *cosmic.VpnCustomerGateway) resource.TestCheckFunc {
-	return func(s *terraform.State) error {
-
-		if vpnCustomerGateway.Esppolicy != "3des-md5" {
-			return fmt.Errorf("Bad ESP policy: %s", vpnCustomerGateway.Esppolicy)
-		}
-
-		if vpnCustomerGateway.Ikepolicy != "3des-md5" {
+		if vpnCustomerGateway.Ikepolicy != "aes256-sha1;modp1024" {
 			return fmt.Errorf("Bad IKE policy: %s", vpnCustomerGateway.Ikepolicy)
 		}
 
@@ -175,14 +110,14 @@ func testAccCheckCosmicVPNCustomerGatewayDestroy(s *terraform.State) error {
 var testAccCosmicVPNCustomerGateway_basic = fmt.Sprintf(`
 resource "cosmic_vpc" "foo" {
   name         = "terraform-vpc-foo"
-  cidr         = "%s"
+  cidr         = "10.0.10.0/22"
   vpc_offering = "%s"
   zone         = "%s"
 }
 
 resource "cosmic_vpc" "bar" {
   name         = "terraform-vpc-bar"
-  cidr         = "%s"
+  cidr         = "10.0.20.0/22"
   vpc_offering = "%s"
   zone         = "%s"
 }
@@ -197,71 +132,22 @@ resource "cosmic_vpn_gateway" "bar" {
 
 resource "cosmic_vpn_customer_gateway" "foo" {
   name       = "terraform-foo"
-  cidr       = "${cosmic_vpc.foo.cidr}"
-  esp_policy = "aes256-sha1"
+  cidr_list  = ["${cosmic_vpc.foo.cidr}"]
   gateway    = "${cosmic_vpn_gateway.foo.public_ip}"
-  ike_policy = "aes256-sha1"
+  esp_policy = "aes256-sha1"
+  ike_policy = "aes256-sha1;modp1024"
   ipsec_psk  = "terraform"
 }
 
 resource "cosmic_vpn_customer_gateway" "bar" {
   name       = "terraform-bar"
-  cidr       = "${cosmic_vpc.bar.cidr}"
+  cidr_list  = ["${cosmic_vpc.bar.cidr}"]
+  gateway    = "${cosmic_vpn_gateway.bar.public_ip}"
   esp_policy = "aes256-sha1"
-  gateway    = "${cosmic_vpn_gateway.bar.public_ip}"
-  ike_policy = "aes256-sha1"
+  ike_policy = "aes256-sha1;modp1024"
   ipsec_psk  = "terraform"
 }`,
-	COSMIC_VPC_CIDR_1,
 	COSMIC_VPC_OFFERING,
 	COSMIC_ZONE,
-	COSMIC_VPC_CIDR_2,
-	COSMIC_VPC_OFFERING,
-	COSMIC_ZONE)
-
-var testAccCosmicVPNCustomerGateway_update = fmt.Sprintf(`
-resource "cosmic_vpc" "foo" {
-  name         = "terraform-vpc-foo"
-  cidr         = "%s"
-  vpc_offering = "%s"
-  zone         = "%s"
-}
-
-resource "cosmic_vpc" "bar" {
-  name         = "terraform-vpc-bar"
-  cidr         = "%s"
-  vpc_offering = "%s"
-  zone         = "%s"
-}
-
-resource "cosmic_vpn_gateway" "foo" {
-  vpc_id = "${cosmic_vpc.foo.id}"
-}
-
-resource "cosmic_vpn_gateway" "bar" {
-  vpc_id = "${cosmic_vpc.bar.id}"
-}
-
-resource "cosmic_vpn_customer_gateway" "foo" {
-  name       = "terraform-foo-bar"
-  cidr       = "${cosmic_vpc.foo.cidr}"
-  esp_policy = "3des-md5"
-  gateway    = "${cosmic_vpn_gateway.foo.public_ip}"
-  ike_policy = "3des-md5"
-  ipsec_psk  = "terraform"
-}
-
-resource "cosmic_vpn_customer_gateway" "bar" {
-  name       = "terraform-bar-foo"
-  cidr       = "${cosmic_vpc.bar.cidr}"
-  esp_policy = "3des-md5"
-  gateway    = "${cosmic_vpn_gateway.bar.public_ip}"
-  ike_policy = "3des-md5"
-  ipsec_psk  = "terraform"
-}`,
-	COSMIC_VPC_CIDR_1,
-	COSMIC_VPC_OFFERING,
-	COSMIC_ZONE,
-	COSMIC_VPC_CIDR_2,
 	COSMIC_VPC_OFFERING,
 	COSMIC_ZONE)

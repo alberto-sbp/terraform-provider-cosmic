@@ -17,7 +17,7 @@ func TestAccCosmicStaticRoute_basic(t *testing.T) {
 		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckCosmicStaticRouteDestroy,
 		Steps: []resource.TestStep{
-			resource.TestStep{
+			{
 				Config: testAccCosmicStaticRoute_basic,
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckCosmicStaticRouteExists(
@@ -62,8 +62,8 @@ func testAccCheckCosmicStaticRouteAttributes(
 	route *cosmic.StaticRoute) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
 
-		if route.Cidr != COSMIC_STATIC_ROUTE_CIDR {
-			return fmt.Errorf("Bad Cidr: %s", route.Cidr)
+		if route.Cidr != "172.16.0.0/16" {
+			return fmt.Errorf("Bad CIDR: %s", route.Cidr)
 		}
 
 		return nil
@@ -92,43 +92,8 @@ func testAccCheckCosmicStaticRouteDestroy(s *terraform.State) error {
 }
 
 var testAccCosmicStaticRoute_basic = fmt.Sprintf(`
-resource "cosmic_vpc" "foo" {
-  name         = "terraform-vpc"
-  cidr         = "%s"
-  vpc_offering = "%s"
-  zone         = "%s"
-}
-
-resource "cosmic_network" "foo" {
-  name             = "terraform-network"
-  cidr             = "%s"
-  network_offering = "%s"
-  zone             = "${cosmic_vpc.foo.zone}"
-}
-
-resource "cosmic_network_acl" "foo" {
-  name   = "terraform-acl"
-  vpc_id = "${cosmic_vpc.foo.id}"
-}
-
-resource "cosmic_private_gateway" "foo" {
-  ip_address = "%s"
-  network_id = "${cosmic_network.foo.id}"
-  acl_id     = "${cosmic_network_acl.foo.id}"
-  vpc_id     = "${cosmic_vpc.foo.id}"
-}
-
 resource "cosmic_static_route" "foo" {
-  depends_on = ["cosmic_private_gateway.foo"]
-  cidr       = "%s"
-  nexthop    = "%s"
-  vpc_id     = "${cosmic_vpc.foo.id}"
-}`,
-	COSMIC_VPC_CIDR_1,
-	COSMIC_VPC_OFFERING,
-	COSMIC_ZONE,
-	COSMIC_PRIVNW_CIDR,
-	COSMIC_PRIVNW_OFFERING,
-	COSMIC_PRIVGW_IPADDRESS,
-	COSMIC_STATIC_ROUTE_CIDR,
-	COSMIC_STATIC_ROUTE_NEXTHOP)
+  cidr    = "172.16.0.0/16"
+  nexthop = "10.0.252.1"
+  vpc_id  = "%s"
+}`, COSMIC_VPC_ID)

@@ -16,7 +16,7 @@ func TestAccCosmicNetworkACL_basic(t *testing.T) {
 		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckCosmicNetworkACLDestroy,
 		Steps: []resource.TestStep{
-			resource.TestStep{
+			{
 				Config: testAccCosmicNetworkACL_basic,
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckCosmicNetworkACLExists(
@@ -94,18 +94,8 @@ func testAccCheckCosmicNetworkACLDestroy(s *terraform.State) error {
 }
 
 var testAccCosmicNetworkACL_basic = fmt.Sprintf(`
-resource "cosmic_vpc" "foo" {
-  name         = "terraform-vpc"
-  cidr         = "%s"
-  vpc_offering = "%s"
-  zone         = "%s"
-}
-
 resource "cosmic_network_acl" "foo" {
   name        = "terraform-acl"
   description = "terraform-acl-text"
-  vpc_id      = "${cosmic_vpc.foo.id}"
-}`,
-	COSMIC_VPC_CIDR_1,
-	COSMIC_VPC_OFFERING,
-	COSMIC_ZONE)
+  vpc_id      = "%s"
+}`, COSMIC_VPC_ID)

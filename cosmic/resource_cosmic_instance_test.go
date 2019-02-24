@@ -17,7 +17,7 @@ func TestAccCosmicInstance_basic(t *testing.T) {
 		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckCosmicInstanceDestroy,
 		Steps: []resource.TestStep{
-			resource.TestStep{
+			{
 				Config: testAccCosmicInstance_basic,
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckCosmicInstanceExists(
@@ -39,7 +39,7 @@ func TestAccCosmicInstance_update(t *testing.T) {
 		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckCosmicInstanceDestroy,
 		Steps: []resource.TestStep{
-			resource.TestStep{
+			{
 				Config: testAccCosmicInstance_basic,
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckCosmicInstanceExists(
@@ -50,7 +50,7 @@ func TestAccCosmicInstance_update(t *testing.T) {
 				),
 			},
 
-			resource.TestStep{
+			{
 				Config: testAccCosmicInstance_renameAndResize,
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckCosmicInstanceExists(
@@ -76,13 +76,13 @@ func TestAccCosmicInstance_fixedIP(t *testing.T) {
 		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckCosmicInstanceDestroy,
 		Steps: []resource.TestStep{
-			resource.TestStep{
+			{
 				Config: testAccCosmicInstance_fixedIP,
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckCosmicInstanceExists(
 						"cosmic_instance.foo", &instance),
 					resource.TestCheckResourceAttr(
-						"cosmic_instance.foo", "ip_address", COSMIC_NETWORK_1_IPADDRESS_1),
+						"cosmic_instance.foo", "ip_address", "10.0.10.10"),
 				),
 			},
 		},
@@ -97,7 +97,7 @@ func TestAccCosmicInstance_keyPair(t *testing.T) {
 		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckCosmicInstanceDestroy,
 		Steps: []resource.TestStep{
-			resource.TestStep{
+			{
 				Config: testAccCosmicInstance_keyPair,
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckCosmicInstanceExists(
@@ -118,7 +118,7 @@ func TestAccCosmicInstance_project(t *testing.T) {
 		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckCosmicInstanceDestroy,
 		Steps: []resource.TestStep{
-			resource.TestStep{
+			{
 				Config: testAccCosmicInstance_project,
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckCosmicInstanceExists(
@@ -180,8 +180,14 @@ func testAccCheckCosmicInstanceAttributes(
 			return fmt.Errorf("Bad template: %s", instance.Templatename)
 		}
 
-		if instance.Nic[0].Networkid != COSMIC_NETWORK_1 {
-			return fmt.Errorf("Bad network ID: %s", instance.Nic[0].Networkid)
+		for _, rs := range s.RootModule().Resources {
+			if rs.Type != "cosmic_network" {
+				continue
+			}
+
+			if instance.Nic[0].Networkid != rs.Primary.ID {
+				return fmt.Errorf("Bad network ID: %s", instance.Nic[0].Networkid)
+			}
 		}
 
 		return nil
@@ -230,89 +236,148 @@ func testAccCheckCosmicInstanceDestroy(s *terraform.State) error {
 }
 
 var testAccCosmicInstance_basic = fmt.Sprintf(`
-resource "cosmic_instance" "foo" {
-  name             = "terraform-test"
-  display_name     = "terraform-test"
-  service_offering = "%s"
-  network_id       = "%s"
-  template         = "%s"
+resource "cosmic_network" "foo" {
+  name             = "terraform-network"
+  cidr             = "10.0.10.0/24"
+  gateway          = "10.0.10.1"
+  network_offering = "%s"
+  vpc_id           = "%s"
   zone             = "%s"
-  user_data        = "foobar\nfoo\nbar"
-  expunge          = true
-}`,
-	COSMIC_SERVICE_OFFERING_1,
-	COSMIC_NETWORK_1,
-	COSMIC_TEMPLATE,
-	COSMIC_ZONE)
-
-var testAccCosmicInstance_renameAndResize = fmt.Sprintf(`
-resource "cosmic_instance" "foo" {
-  name             = "terraform-updated"
-  display_name     = "terraform-updated"
-  service_offering = "%s"
-  network_id       = "%s"
-  template         = "%s"
-  zone             = "%s"
-  user_data        = "foobar\nfoo\nbar"
-  expunge          = true
-}`,
-	COSMIC_SERVICE_OFFERING_2,
-	COSMIC_NETWORK_1,
-	COSMIC_TEMPLATE,
-	COSMIC_ZONE)
-
-var testAccCosmicInstance_fixedIP = fmt.Sprintf(`
-resource "cosmic_instance" "foo" {
-  name             = "terraform-test"
-  display_name     = "terraform-test"
-  service_offering = "%s"
-  network_id       = "%s"
-  ip_address       = "%s"
-  template         = "%s"
-  zone             = "%s"
-  expunge          = true
-}`,
-	COSMIC_SERVICE_OFFERING_1,
-	COSMIC_NETWORK_1,
-	COSMIC_NETWORK_1_IPADDRESS1,
-	COSMIC_TEMPLATE,
-	COSMIC_ZONE)
-
-var testAccCosmicInstance_keyPair = fmt.Sprintf(`
-resource "cosmic_ssh_keypair" "foo" {
-  name = "terraform-test-keypair"
 }
 
 resource "cosmic_instance" "foo" {
   name             = "terraform-test"
   display_name     = "terraform-test"
   service_offering = "%s"
-  network_id       = "%s"
-  ip_address       = "%s"
+  network_id       = "${cosmic_network.foo.id}"
   template         = "%s"
-  zone             = "%s"
-  keypair          = "${cosmic_ssh_keypair.foo.name}"
+  zone             = "${cosmic_network.foo.zone}"
+  user_data        = "foobar\nfoo\nbar"
   expunge          = true
 }`,
+	COSMIC_VPC_NETWORK_OFFERING,
+	COSMIC_VPC_ID,
+	COSMIC_ZONE,
 	COSMIC_SERVICE_OFFERING_1,
-	COSMIC_NETWORK_1,
-	COSMIC_NETWORK_1_IPADDRESS1,
-	COSMIC_TEMPLATE,
-	COSMIC_ZONE)
+	COSMIC_TEMPLATE)
 
-var testAccCosmicInstance_project = fmt.Sprintf(`
+var testAccCosmicInstance_renameAndResize = fmt.Sprintf(`
+resource "cosmic_network" "foo" {
+  name             = "terraform-network"
+  cidr             = "10.0.10.0/24"
+  gateway          = "10.0.10.1"
+  network_offering = "%s"
+  vpc_id           = "%s"
+  zone             = "%s"
+}
+
+resource "cosmic_instance" "foo" {
+  name             = "terraform-updated"
+  display_name     = "terraform-updated"
+  service_offering = "%s"
+  network_id       = "${cosmic_network.foo.id}"
+  template         = "%s"
+  zone             = "${cosmic_network.foo.zone}"
+  user_data        = "foobar\nfoo\nbar"
+  expunge          = true
+}`,
+	COSMIC_VPC_NETWORK_OFFERING,
+	COSMIC_VPC_ID,
+	COSMIC_ZONE,
+	COSMIC_SERVICE_OFFERING_2,
+	COSMIC_TEMPLATE)
+
+var testAccCosmicInstance_fixedIP = fmt.Sprintf(`
+resource "cosmic_network" "foo" {
+  name             = "terraform-network"
+  cidr             = "10.0.10.0/24"
+  gateway          = "10.0.10.1"
+  network_offering = "%s"
+  vpc_id           = "%s"
+  zone             = "%s"
+}
+
 resource "cosmic_instance" "foo" {
   name             = "terraform-test"
   display_name     = "terraform-test"
   service_offering = "%s"
-  network_id       = "%s"
+  network_id       = "${cosmic_network.foo.id}"
+  ip_address       = "10.0.10.10"
   template         = "%s"
-  project          = "%s"
-  zone             = "%s"
+  zone             = "${cosmic_network.foo.zone}"
   expunge          = true
 }`,
+	COSMIC_VPC_NETWORK_OFFERING,
+	COSMIC_VPC_ID,
+	COSMIC_ZONE,
 	COSMIC_SERVICE_OFFERING_1,
-	COSMIC_PROJECT_NETWORK,
-	COSMIC_TEMPLATE,
+	COSMIC_TEMPLATE)
+
+var testAccCosmicInstance_keyPair = fmt.Sprintf(`
+resource "cosmic_ssh_keypair" "foo" {
+  name = "terraform-test-keypair"
+}
+
+resource "cosmic_network" "foo" {
+  name             = "terraform-network"
+  cidr             = "10.0.10.0/24"
+  gateway          = "10.0.10.1"
+  network_offering = "%s"
+  vpc_id           = "%s"
+  zone             = "%s"
+}
+
+resource "cosmic_instance" "foo" {
+  name             = "terraform-test"
+  display_name     = "terraform-test"
+  service_offering = "%s"
+  network_id       = "${cosmic_network.foo.id}"
+  ip_address       = "10.0.10.10"
+  template         = "%s"
+  zone             = "${cosmic_network.foo.zone}"
+  keypair          = "${cosmic_ssh_keypair.foo.name}"
+  expunge          = true
+}`,
+	COSMIC_VPC_NETWORK_OFFERING,
+	COSMIC_VPC_ID,
+	COSMIC_ZONE,
+	COSMIC_SERVICE_OFFERING_1,
+	COSMIC_TEMPLATE)
+
+var testAccCosmicInstance_project = fmt.Sprintf(`
+resource "cosmic_vpc" "foo" {
+  name           = "terraform-vpc"
+  display_text   = "terraform-vpc-text"
+  cidr           = "10.0.10.0/22"
+  vpc_offering   = "%s"
+  network_domain = "terraform-domain"
+  project        = "%s"
+  zone           = "%s"
+}
+
+resource "cosmic_network" "foo" {
+  name             = "terraform-network"
+  cidr             = "10.0.10.0/24"
+  gateway          = "10.0.10.1"
+  network_offering = "%s"
+  project          = "${cosmic_vpc.foo.project}"
+  vpc_id           = "${cosmic_vpc.foo.id}"
+  zone             = "${cosmic_vpc.foo.zone}"
+}
+
+resource "cosmic_instance" "foo" {
+  name             = "terraform-test"
+  display_name     = "terraform-test"
+  service_offering = "%s"
+  network_id       = "${cosmic_network.foo.id}"
+  template         = "%s"
+  project          = "${cosmic_vpc.foo.project}"
+  zone             = "${cosmic_vpc.foo.zone}"
+  expunge          = true
+}`,
+	COSMIC_VPC_OFFERING,
 	COSMIC_PROJECT_NAME,
-	COSMIC_ZONE)
+	COSMIC_ZONE,
+	COSMIC_VPC_NETWORK_OFFERING,
+	COSMIC_SERVICE_OFFERING_1,
+	COSMIC_TEMPLATE)

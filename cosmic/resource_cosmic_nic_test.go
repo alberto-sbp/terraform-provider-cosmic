@@ -17,11 +17,11 @@ func TestAccCosmicNIC_basic(t *testing.T) {
 		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckCosmicNICDestroy,
 		Steps: []resource.TestStep{
-			resource.TestStep{
+			{
 				Config: testAccCosmicNIC_basic,
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckCosmicNICExists(
-						"cosmic_instance.foo", "cosmic_nic.foo", &nic),
+						"cosmic_instance.foo", "cosmic_nic.bar", &nic),
 					testAccCheckCosmicNICAttributes(&nic),
 				),
 			},
@@ -37,23 +37,24 @@ func TestAccCosmicNIC_update(t *testing.T) {
 		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckCosmicNICDestroy,
 		Steps: []resource.TestStep{
-			resource.TestStep{
+			{
 				Config: testAccCosmicNIC_basic,
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckCosmicNICExists(
-						"cosmic_instance.foo", "cosmic_nic.foo", &nic),
+						"cosmic_instance.foo", "cosmic_nic.bar", &nic),
 					testAccCheckCosmicNICAttributes(&nic),
 				),
 			},
 
-			resource.TestStep{
+			{
 				Config: testAccCosmicNIC_ipaddress,
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckCosmicNICExists(
-						"cosmic_instance.foo", "cosmic_nic.foo", &nic),
+						"cosmic_instance.foo", "cosmic_nic.bar", &nic),
+					testAccCheckCosmicNICAttributes(&nic),
 					testAccCheckCosmicNICIPAddress(&nic),
 					resource.TestCheckResourceAttr(
-						"cosmic_nic.foo", "ip_address", COSMIC_2ND_NIC_IPADDRESS),
+						"cosmic_nic.bar", "ip_address", "10.0.11.10"),
 				),
 			},
 		},
@@ -103,8 +104,8 @@ func testAccCheckCosmicNICAttributes(
 	nic *cosmic.Nic) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
 
-		if nic.Networkid != COSMIC_2ND_NIC_NETWORK {
-			return fmt.Errorf("Bad network ID: %s", nic.Networkid)
+		if nic.Networkname != "terraform-network-bar" {
+			return fmt.Errorf("Bad network name: %s", nic.Networkname)
 		}
 
 		return nil
@@ -115,11 +116,11 @@ func testAccCheckCosmicNICIPAddress(
 	nic *cosmic.Nic) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
 
-		if nic.Networkid != COSMIC_2ND_NIC_NETWORK {
-			return fmt.Errorf("Bad network ID: %s", nic.Networkname)
+		if nic.Networkname != "terraform-network-bar" {
+			return fmt.Errorf("Bad network name: %s", nic.Networkname)
 		}
 
-		if nic.Ipaddress != COSMIC_2ND_NIC_IPADDRESS {
+		if nic.Ipaddress != "10.0.11.10" {
 			return fmt.Errorf("Bad IP address: %s", nic.Ipaddress)
 		}
 
@@ -150,45 +151,80 @@ func testAccCheckCosmicNICDestroy(s *terraform.State) error {
 }
 
 var testAccCosmicNIC_basic = fmt.Sprintf(`
+resource "cosmic_network" "foo" {
+  name             = "terraform-network-foo"
+  cidr             = "10.0.10.0/24"
+  gateway          = "10.0.10.1"
+  network_offering = "%s"
+  vpc_id           = "%s"
+  zone             = "%s"
+}
+
+resource "cosmic_network" "bar" {
+  name             = "terraform-network-bar"
+  cidr             = "10.0.11.0/24"
+  gateway          = "10.0.11.1"
+  network_offering = "${cosmic_network.foo.network_offering}"
+  vpc_id           = "${cosmic_network.foo.vpc_id}"
+  zone             = "${cosmic_network.foo.zone}"
+}
+
 resource "cosmic_instance" "foo" {
   name             = "terraform-test"
   display_name     = "terraform"
   service_offering = "%s"
-  network_id       = "%s"
+  network_id       = "${cosmic_network.foo.id}"
   template         = "%s"
-  zone             = "%s"
+  zone             = "${cosmic_network.foo.zone}"
   expunge          = true
 }
 
-resource "cosmic_nic" "foo" {
-  network_id         = "%s"
+resource "cosmic_nic" "bar" {
+  network_id         = "${cosmic_network.bar.id}"
   virtual_machine_id = "${cosmic_instance.foo.id}"
 }`,
-	COSMIC_SERVICE_OFFERING_1,
-	COSMIC_NETWORK_1,
-	COSMIC_TEMPLATE,
+	COSMIC_VPC_NETWORK_OFFERING,
+	COSMIC_VPC_ID,
 	COSMIC_ZONE,
-	COSMIC_2ND_NIC_NETWORK)
+	COSMIC_SERVICE_OFFERING_1,
+	COSMIC_TEMPLATE)
 
 var testAccCosmicNIC_ipaddress = fmt.Sprintf(`
+resource "cosmic_network" "foo" {
+  name             = "terraform-network-foo"
+  cidr             = "10.0.10.0/24"
+  gateway          = "10.0.10.1"
+  network_offering = "%s"
+  vpc_id           = "%s"
+  zone             = "%s"
+}
+
+resource "cosmic_network" "bar" {
+  name             = "terraform-network-bar"
+  cidr             = "10.0.11.0/24"
+  gateway          = "10.0.11.1"
+  network_offering = "${cosmic_network.foo.network_offering}"
+  vpc_id           = "${cosmic_network.foo.vpc_id}"
+  zone             = "${cosmic_network.foo.zone}"
+}
+
 resource "cosmic_instance" "foo" {
   name             = "terraform-test"
   display_name     = "terraform"
   service_offering = "%s"
-  network_id       = "%s"
+  network_id       = "${cosmic_network.foo.id}"
   template         = "%s"
-  zone             = "%s"
+  zone             = "${cosmic_network.foo.zone}"
   expunge          = true
 }
 
-resource "cosmic_nic" "foo" {
-  network_id         = "%s"
-  ip_address         = "%s"
+resource "cosmic_nic" "bar" {
+  network_id         = "${cosmic_network.bar.id}"
+  ip_address         = "10.0.11.10"
   virtual_machine_id = "${cosmic_instance.foo.id}"
 }`,
-	COSMIC_SERVICE_OFFERING_1,
-	COSMIC_NETWORK_1,
-	COSMIC_TEMPLATE,
+	COSMIC_VPC_NETWORK_OFFERING,
+	COSMIC_VPC_ID,
 	COSMIC_ZONE,
-	COSMIC_2ND_NIC_NETWORK,
-	COSMIC_2ND_NIC_IPADDRESS)
+	COSMIC_SERVICE_OFFERING_1,
+	COSMIC_TEMPLATE)

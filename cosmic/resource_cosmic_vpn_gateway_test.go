@@ -17,7 +17,7 @@ func TestAccCosmicVPNGateway_basic(t *testing.T) {
 		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckCosmicVPNGatewayDestroy,
 		Steps: []resource.TestStep{
-			resource.TestStep{
+			{
 				Config: testAccCosmicVPNGateway_basic,
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckCosmicVPNGatewayExists(
@@ -79,17 +79,6 @@ func testAccCheckCosmicVPNGatewayDestroy(s *terraform.State) error {
 }
 
 var testAccCosmicVPNGateway_basic = fmt.Sprintf(`
-resource "cosmic_vpc" "foo" {
-  name         = "terraform-vpc"
-  display_text = "terraform-vpc-text"
-  cidr         = "%s"
-  vpc_offering = "%s"
-  zone         = "%s"
-}
-
 resource "cosmic_vpn_gateway" "foo" {
-  vpc_id = "${cosmic_vpc.foo.id}"
-}`,
-	COSMIC_VPC_CIDR_1,
-	COSMIC_VPC_OFFERING,
-	COSMIC_ZONE)
+  vpc_id = "%s"
+}`, COSMIC_VPC_ID)

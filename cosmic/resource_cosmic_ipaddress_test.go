@@ -17,31 +17,12 @@ func TestAccCosmicIPAddress_basic(t *testing.T) {
 		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckCosmicIPAddressDestroy,
 		Steps: []resource.TestStep{
-			resource.TestStep{
+			{
 				Config: testAccCosmicIPAddress_basic,
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckCosmicIPAddressExists(
 						"cosmic_ipaddress.foo", &ipaddr),
 					testAccCheckCosmicIPAddressAttributes(&ipaddr),
-				),
-			},
-		},
-	})
-}
-
-func TestAccCosmicIPAddress_vpc(t *testing.T) {
-	var ipaddr cosmic.PublicIpAddress
-
-	resource.Test(t, resource.TestCase{
-		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
-		CheckDestroy: testAccCheckCosmicIPAddressDestroy,
-		Steps: []resource.TestStep{
-			resource.TestStep{
-				Config: testAccCosmicIPAddress_vpc,
-				Check: resource.ComposeTestCheckFunc(
-					testAccCheckCosmicIPAddressExists(
-						"cosmic_ipaddress.foo", &ipaddr),
 				),
 			},
 		},
@@ -81,8 +62,14 @@ func testAccCheckCosmicIPAddressAttributes(
 	ipaddr *cosmic.PublicIpAddress) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
 
-		if ipaddr.Associatednetworkid != COSMIC_NETWORK_1 {
-			return fmt.Errorf("Bad network ID: %s", ipaddr.Associatednetworkid)
+		for _, rs := range s.RootModule().Resources {
+			if rs.Type != "cosmic_vpc" {
+				continue
+			}
+
+			if ipaddr.Vpcid != rs.Primary.ID {
+				return fmt.Errorf("Bad network ID: %s", ipaddr.Associatednetworkid)
+			}
 		}
 
 		return nil
@@ -112,20 +99,8 @@ func testAccCheckCosmicIPAddressDestroy(s *terraform.State) error {
 
 var testAccCosmicIPAddress_basic = fmt.Sprintf(`
 resource "cosmic_ipaddress" "foo" {
-  network_id = "%s"
-}`, COSMIC_NETWORK_1)
-
-var testAccCosmicIPAddress_vpc = fmt.Sprintf(`
-resource "cosmic_vpc" "foo" {
-  name         = "terraform-vpc"
-  cidr         = "%s"
-  vpc_offering = "%s"
-  zone         = "%s"
-}
-
-resource "cosmic_ipaddress" "foo" {
-  vpc_id = "${cosmic_vpc.foo.id}"
+  acl_id = "%s"
+  vpc_id = "%s"
 }`,
-	COSMIC_VPC_CIDR_1,
-	COSMIC_VPC_OFFERING,
-	COSMIC_ZONE)
+	COSMIC_DEFAULT_ALLOW_ACL_ID,
+	COSMIC_VPC_ID)
