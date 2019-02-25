@@ -51,20 +51,17 @@ func resourceCosmicLoadBalancerRule() *schema.Resource {
 			"private_port": &schema.Schema{
 				Type:     schema.TypeInt,
 				Required: true,
-				ForceNew: true,
 			},
 
 			"public_port": &schema.Schema{
 				Type:     schema.TypeInt,
 				Required: true,
-				ForceNew: true,
 			},
 
 			"protocol": &schema.Schema{
 				Type:     schema.TypeString,
 				Optional: true,
 				Computed: true,
-				ForceNew: true,
 				ValidateFunc: func(val interface{}, key string) (warns []string, errs []error) {
 					v := val.(string)
 					switch v {
@@ -80,7 +77,6 @@ func resourceCosmicLoadBalancerRule() *schema.Resource {
 			"member_ids": &schema.Schema{
 				Type:     schema.TypeList,
 				Required: true,
-				ForceNew: true,
 				Elem:     &schema.Schema{Type: schema.TypeString},
 			},
 
