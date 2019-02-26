@@ -17,7 +17,7 @@ func TestAccCosmicSecondaryIPAddress_basic(t *testing.T) {
 		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckCosmicSecondaryIPAddressDestroy,
 		Steps: []resource.TestStep{
-			resource.TestStep{
+			{
 				Config: testAccCosmicSecondaryIPAddress_basic,
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckCosmicSecondaryIPAddressExists(
@@ -36,14 +36,14 @@ func TestAccCosmicSecondaryIPAddress_fixedIP(t *testing.T) {
 		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckCosmicSecondaryIPAddressDestroy,
 		Steps: []resource.TestStep{
-			resource.TestStep{
+			{
 				Config: testAccCosmicSecondaryIPAddress_fixedIP,
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckCosmicSecondaryIPAddressExists(
 						"cosmic_secondary_ipaddress.foo", &ip),
 					testAccCheckCosmicSecondaryIPAddressAttributes(&ip),
 					resource.TestCheckResourceAttr(
-						"cosmic_secondary_ipaddress.foo", "ip_address", COSMIC_NETWORK_1_IPADDRESS1),
+						"cosmic_secondary_ipaddress.foo", "ip_address", "10.0.10.10"),
 				),
 			},
 		},
@@ -124,7 +124,7 @@ func testAccCheckCosmicSecondaryIPAddressAttributes(
 	ip *cosmic.AddIpToNicResponse) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
 
-		if ip.Ipaddress != COSMIC_NETWORK_1_IPADDRESS1 {
+		if ip.Ipaddress != "10.0.10.10" {
 			return fmt.Errorf("Bad IP address: %s", ip.Ipaddress)
 		}
 		return nil
@@ -200,40 +200,58 @@ func testAccCheckCosmicSecondaryIPAddressDestroy(s *terraform.State) error {
 }
 
 var testAccCosmicSecondaryIPAddress_basic = fmt.Sprintf(`
-resource "cosmic_instance" "foobar" {
-  name = "terraform-test"
-  service_offering= "%s"
-  network_id = "%s"
-  template = "%s"
-  zone = "%s"
-  expunge = true
+resource "cosmic_network" "foo" {
+  name             = "terraform-network"
+  cidr             = "10.0.10.0/24"
+  gateway          = "10.0.10.1"
+  network_offering = "%s"
+  vpc_id           = "%s"
+  zone             = "%s"
+}
+
+resource "cosmic_instance" "foo" {
+  name             = "terraform-test"
+  service_offering = "%s"
+  network_id       = "${cosmic_network.foo.id}"
+  template         = "%s"
+  zone             = "${cosmic_network.foo.zone}"
+  expunge          = true
 }
 
 resource "cosmic_secondary_ipaddress" "foo" {
-	virtual_machine_id = "${cosmic_instance.foobar.id}"
-}
-`,
+  virtual_machine_id = "${cosmic_instance.foo.id}"
+}`,
+	COSMIC_VPC_NETWORK_OFFERING,
+	COSMIC_VPC_ID,
+	COSMIC_ZONE,
 	COSMIC_SERVICE_OFFERING_1,
-	COSMIC_NETWORK_1,
-	COSMIC_TEMPLATE,
-	COSMIC_ZONE)
+	COSMIC_TEMPLATE)
 
 var testAccCosmicSecondaryIPAddress_fixedIP = fmt.Sprintf(`
-resource "cosmic_instance" "foobar" {
-  name = "terraform-test"
-  service_offering= "%s"
-  network_id = "%s"
-  template = "%s"
-  zone = "%s"
-  expunge = true
+resource "cosmic_network" "foo" {
+  name             = "terraform-network"
+  cidr             = "10.0.10.0/24"
+  gateway          = "10.0.10.1"
+  network_offering = "%s"
+  vpc_id           = "%s"
+  zone             = "%s"
+}
+
+resource "cosmic_instance" "foo" {
+  name             = "terraform-test"
+  service_offering = "%s"
+  network_id       = "${cosmic_network.foo.id}"
+  template         = "%s"
+  zone             = "${cosmic_network.foo.zone}"
+  expunge          = true
 }
 
 resource "cosmic_secondary_ipaddress" "foo" {
-	ip_address = "%s"
-	virtual_machine_id = "${cosmic_instance.foobar.id}"
+  ip_address         = "10.0.10.10"
+  virtual_machine_id = "${cosmic_instance.foo.id}"
 }`,
-	COSMIC_SERVICE_OFFERING_1,
-	COSMIC_NETWORK_1,
-	COSMIC_TEMPLATE,
+	COSMIC_VPC_NETWORK_OFFERING,
+	COSMIC_VPC_ID,
 	COSMIC_ZONE,
-	COSMIC_NETWORK_1_IPADDRESS1)
+	COSMIC_SERVICE_OFFERING_1,
+	COSMIC_TEMPLATE)

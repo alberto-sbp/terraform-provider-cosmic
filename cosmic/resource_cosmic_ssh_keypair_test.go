@@ -18,7 +18,7 @@ func TestAccCosmicSSHKeyPair_basic(t *testing.T) {
 		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckCosmicSSHKeyPairDestroy,
 		Steps: []resource.TestStep{
-			resource.TestStep{
+			{
 				Config: testAccCosmicSSHKeyPair_create,
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckCosmicSSHKeyPairExists("cosmic_ssh_keypair.foo", &sshkey),
@@ -38,15 +38,13 @@ func TestAccCosmicSSHKeyPair_register(t *testing.T) {
 		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckCosmicSSHKeyPairDestroy,
 		Steps: []resource.TestStep{
-			resource.TestStep{
+			{
 				Config: testAccCosmicSSHKeyPair_register,
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckCosmicSSHKeyPairExists("cosmic_ssh_keypair.foo", &sshkey),
 					testAccCheckCosmicSSHKeyPairAttributes(&sshkey),
 					resource.TestCheckResourceAttr(
-						"cosmic_ssh_keypair.foo",
-						"public_key",
-						COSMIC_SSH_PUBLIC_KEY),
+						"cosmic_ssh_keypair.foo", "public_key", publicKey),
 				),
 			},
 		},
@@ -89,7 +87,7 @@ func testAccCheckCosmicSSHKeyPairAttributes(
 
 		fpLen := len(keypair.Fingerprint)
 		if fpLen != 47 {
-			return fmt.Errorf("SSH key: Attribute private_key expected length 47, got %d", fpLen)
+			return fmt.Errorf("SSH key: Attribute fingerprint expected length 47, got %d", fpLen)
 		}
 
 		return nil
@@ -157,13 +155,19 @@ func testAccCheckCosmicSSHKeyPairDestroy(s *terraform.State) error {
 	return nil
 }
 
-var testAccCosmicSSHKeyPair_create = fmt.Sprintf(`
+const testAccCosmicSSHKeyPair_create = `
 resource "cosmic_ssh_keypair" "foo" {
   name = "terraform-test-keypair"
-}`)
+}`
 
 var testAccCosmicSSHKeyPair_register = fmt.Sprintf(`
 resource "cosmic_ssh_keypair" "foo" {
-  name = "terraform-test-keypair"
+  name       = "terraform-test-keypair"
   public_key = "%s"
-}`, COSMIC_SSH_PUBLIC_KEY)
+}`, publicKey)
+
+const publicKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDSPcjvm/QSl+dtYa1RFWqJfDZcr5GMxegiPjefHz" +
+	"57zvTn/FXN4V5V5pS2nmmEfztm3TLEVSCA6kRWJHFf5A9cSAqc/NqGX5qb8J8wbuLzdKA+LvMfru3HoUeWrBPgzMu2rb" +
+	"16JqPYM6AGTSAmh93YabuuJW4HQ3NpvphtBS3XozYL5DUUzLpUtPrkzutyfQmfC71OSIO6Lxkt/uYfZALZ4u5hOhXfGQ" +
+	"Gx/M9aRHQyRuoyPTXEuzY2JH5H4Z++y1g/rVrb2TaSKXyaACnmYh2/s65qSiaZZ3P9WdfzCPOUMePaSLZLSj0ZhMjlS9" +
+	"OBT35VHz2tZ0p4VL8uOXNGyI/P user@host"

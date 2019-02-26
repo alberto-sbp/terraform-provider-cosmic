@@ -17,34 +17,12 @@ func TestAccCosmicDisk_basic(t *testing.T) {
 		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckCosmicDiskDestroy,
 		Steps: []resource.TestStep{
-			resource.TestStep{
+			{
 				Config: testAccCosmicDisk_basic,
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckCosmicDiskExists(
 						"cosmic_disk.foo", &disk),
 					testAccCheckCosmicDiskAttributes(&disk),
-				),
-			},
-		},
-	})
-}
-
-func TestAccCosmicDisk_deviceID(t *testing.T) {
-	var disk cosmic.Volume
-
-	resource.Test(t, resource.TestCase{
-		PreCheck:     func() { testAccPreCheck(t) },
-		Providers:    testAccProviders,
-		CheckDestroy: testAccCheckCosmicDiskDestroy,
-		Steps: []resource.TestStep{
-			resource.TestStep{
-				Config: testAccCosmicDisk_deviceID,
-				Check: resource.ComposeTestCheckFunc(
-					testAccCheckCosmicDiskExists(
-						"cosmic_disk.foo", &disk),
-					testAccCheckCosmicDiskAttributes(&disk),
-					resource.TestCheckResourceAttr(
-						"cosmic_disk.foo", "device_id", "4"),
 				),
 			},
 		},
@@ -59,23 +37,98 @@ func TestAccCosmicDisk_update(t *testing.T) {
 		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckCosmicDiskDestroy,
 		Steps: []resource.TestStep{
-			resource.TestStep{
+			{
+				Config: testAccCosmicDisk_basic,
+				Check: resource.ComposeTestCheckFunc(
+					testAccCheckCosmicDiskExists(
+						"cosmic_disk.foo", &disk),
+					testAccCheckCosmicDiskAttributes(&disk),
+					resource.TestCheckResourceAttr(
+						"cosmic_disk.foo", "size", "10"),
+				),
+			},
+
+			{
 				Config: testAccCosmicDisk_update,
+				Check: resource.ComposeTestCheckFunc(
+					testAccCheckCosmicDiskExists(
+						"cosmic_disk.foo", &disk),
+					resource.TestCheckResourceAttr(
+						"cosmic_disk.foo", "size", "20"),
+				),
+			},
+		},
+	})
+}
+
+func TestAccCosmicDisk_attachBasic(t *testing.T) {
+	var disk cosmic.Volume
+
+	resource.Test(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
+		CheckDestroy: testAccCheckCosmicDiskDestroy,
+		Steps: []resource.TestStep{
+			{
+				Config: testAccCosmicDisk_attachBasic,
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckCosmicDiskExists(
 						"cosmic_disk.foo", &disk),
 					testAccCheckCosmicDiskAttributes(&disk),
 				),
 			},
+		},
+	})
+}
 
-			resource.TestStep{
-				Config: testAccCosmicDisk_resize,
+func TestAccCosmicDisk_attachUpdate(t *testing.T) {
+	var disk cosmic.Volume
+
+	resource.Test(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
+		CheckDestroy: testAccCheckCosmicDiskDestroy,
+		Steps: []resource.TestStep{
+			{
+				Config: testAccCosmicDisk_attachBasic,
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckCosmicDiskExists(
 						"cosmic_disk.foo", &disk),
-					testAccCheckCosmicDiskResized(&disk),
+					testAccCheckCosmicDiskAttributes(&disk),
 					resource.TestCheckResourceAttr(
-						"cosmic_disk.foo", "disk_offering", COSMIC_DISK_OFFERING_2),
+						"cosmic_disk.foo", "size", "10"),
+				),
+			},
+
+			{
+				Config: testAccCosmicDisk_attachUpdate,
+				Check: resource.ComposeTestCheckFunc(
+					testAccCheckCosmicDiskExists(
+						"cosmic_disk.foo", &disk),
+					resource.TestCheckResourceAttr(
+						"cosmic_disk.foo", "size", "20"),
+				),
+			},
+		},
+	})
+}
+
+func TestAccCosmicDisk_attachDeviceID(t *testing.T) {
+	var disk cosmic.Volume
+
+	resource.Test(t, resource.TestCase{
+		PreCheck:     func() { testAccPreCheck(t) },
+		Providers:    testAccProviders,
+		CheckDestroy: testAccCheckCosmicDiskDestroy,
+		Steps: []resource.TestStep{
+			{
+				Config: testAccCosmicDisk_attachDeviceID,
+				Check: resource.ComposeTestCheckFunc(
+					testAccCheckCosmicDiskExists(
+						"cosmic_disk.foo", &disk),
+					testAccCheckCosmicDiskAttributes(&disk),
+					resource.TestCheckResourceAttr(
+						"cosmic_disk.foo", "device_id", "4"),
 				),
 			},
 		},
@@ -127,18 +180,6 @@ func testAccCheckCosmicDiskAttributes(
 	}
 }
 
-func testAccCheckCosmicDiskResized(
-	disk *cosmic.Volume) resource.TestCheckFunc {
-	return func(s *terraform.State) error {
-
-		if disk.Diskofferingname != COSMIC_DISK_OFFERING_2 {
-			return fmt.Errorf("Bad disk offering: %s", disk.Diskofferingname)
-		}
-
-		return nil
-	}
-}
-
 func testAccCheckCosmicDiskDestroy(s *terraform.State) error {
 	cs := testAccProvider.Meta().(*cosmic.CosmicClient)
 
@@ -162,83 +203,128 @@ func testAccCheckCosmicDiskDestroy(s *terraform.State) error {
 
 var testAccCosmicDisk_basic = fmt.Sprintf(`
 resource "cosmic_disk" "foo" {
-  name = "terraform-disk"
-  attach = false
+  name          = "terraform-disk"
+  attach        = false
+  size          = "10"
   disk_offering = "%s"
-  zone = "%s"
+  zone          = "%s"
 }`,
 	COSMIC_DISK_OFFERING_1,
 	COSMIC_ZONE)
 
-var testAccCosmicDisk_deviceID = fmt.Sprintf(`
-resource "cosmic_instance" "foobar" {
-  name = "terraform-test"
-  display_name = "terraform"
-  service_offering= "%s"
-  network_id = "%s"
-  template = "%s"
-  zone = "%s"
-  expunge = true
-}
-
-resource "cosmic_disk" "foo" {
-  name = "terraform-disk"
-  attach = true
-  device_id = 4
-  disk_offering = "%s"
-  virtual_machine_id = "${cosmic_instance.foobar.id}"
-  zone = "${cosmic_instance.foobar.zone}"
-}`,
-	COSMIC_SERVICE_OFFERING_1,
-	COSMIC_NETWORK_1,
-	COSMIC_TEMPLATE,
-	COSMIC_ZONE,
-	COSMIC_DISK_OFFERING_1)
-
 var testAccCosmicDisk_update = fmt.Sprintf(`
-resource "cosmic_instance" "foobar" {
-  name = "terraform-test"
-  display_name = "terraform"
-  service_offering= "%s"
-  network_id = "%s"
-  template = "%s"
-  zone = "%s"
-  expunge = true
+resource "cosmic_disk" "foo" {
+  name          = "terraform-disk"
+  attach        = false
+  size          = "20"
+  disk_offering = "%s"
+  zone          = "%s"
+}`,
+	COSMIC_DISK_OFFERING_1,
+	COSMIC_ZONE)
+
+var testAccCosmicDisk_attachBasic = fmt.Sprintf(`
+resource "cosmic_network" "foo" {
+  name             = "terraform-network"
+  cidr             = "10.0.10.0/24"
+  gateway          = "10.0.10.1"
+  network_offering = "%s"
+  vpc_id           = "%s"
+  zone             = "%s"
+}
+
+resource "cosmic_instance" "foo" {
+  name             = "terraform-test"
+  display_name     = "terraform"
+  service_offering = "%s"
+  network_id       = "${cosmic_network.foo.id}"
+  template         = "%s"
+  zone             = "${cosmic_network.foo.zone}"
+  expunge          = true
 }
 
 resource "cosmic_disk" "foo" {
-  name = "terraform-disk"
-  attach = true
-  disk_offering = "%s"
-  virtual_machine_id = "${cosmic_instance.foobar.id}"
-  zone = "${cosmic_instance.foobar.zone}"
+  name               = "terraform-disk"
+  attach             = true
+  size               = "10"
+  disk_offering      = "%s"
+  virtual_machine_id = "${cosmic_instance.foo.id}"
+  zone               = "${cosmic_instance.foo.zone}"
 }`,
-	COSMIC_SERVICE_OFFERING_1,
-	COSMIC_NETWORK_1,
-	COSMIC_TEMPLATE,
+	COSMIC_VPC_NETWORK_OFFERING,
+	COSMIC_VPC_ID,
 	COSMIC_ZONE,
+	COSMIC_SERVICE_OFFERING_1,
+	COSMIC_TEMPLATE,
 	COSMIC_DISK_OFFERING_1)
 
-var testAccCosmicDisk_resize = fmt.Sprintf(`
-resource "cosmic_instance" "foobar" {
-  name = "terraform-test"
-  display_name = "terraform"
-  service_offering= "%s"
-  network_id = "%s"
-  template = "%s"
-  zone = "%s"
-  expunge = true
+var testAccCosmicDisk_attachDeviceID = fmt.Sprintf(`
+resource "cosmic_network" "foo" {
+  name             = "terraform-network"
+  cidr             = "10.0.10.0/24"
+  gateway          = "10.0.10.1"
+  network_offering = "%s"
+  vpc_id           = "%s"
+  zone             = "%s"
+}
+
+resource "cosmic_instance" "foo" {
+  name             = "terraform-test"
+  display_name     = "terraform"
+  service_offering = "%s"
+  network_id       = "${cosmic_network.foo.id}"
+  template         = "%s"
+  zone             = "${cosmic_network.foo.zone}"
+  expunge          = true
 }
 
 resource "cosmic_disk" "foo" {
-  name = "terraform-disk"
-  attach = true
-  disk_offering = "%s"
-	virtual_machine_id = "${cosmic_instance.foobar.id}"
-  zone = "${cosmic_instance.foobar.zone}"
+  name               = "terraform-disk"
+  attach             = true
+  device_id          = 4
+  size               = "10"
+  disk_offering      = "%s"
+  virtual_machine_id = "${cosmic_instance.foo.id}"
+  zone               = "${cosmic_instance.foo.zone}"
 }`,
-	COSMIC_SERVICE_OFFERING_1,
-	COSMIC_NETWORK_1,
-	COSMIC_TEMPLATE,
+	COSMIC_VPC_NETWORK_OFFERING,
+	COSMIC_VPC_ID,
 	COSMIC_ZONE,
-	COSMIC_DISK_OFFERING_2)
+	COSMIC_SERVICE_OFFERING_1,
+	COSMIC_TEMPLATE,
+	COSMIC_DISK_OFFERING_1)
+
+var testAccCosmicDisk_attachUpdate = fmt.Sprintf(`
+resource "cosmic_network" "foo" {
+  name             = "terraform-network"
+  cidr             = "10.0.10.0/24"
+  gateway          = "10.0.10.1"
+  network_offering = "%s"
+  vpc_id           = "%s"
+  zone             = "%s"
+}
+
+resource "cosmic_instance" "foo" {
+  name             = "terraform-test"
+  display_name     = "terraform"
+  service_offering = "%s"
+  network_id       = "${cosmic_network.foo.id}"
+  template         = "%s"
+  zone             = "${cosmic_network.foo.zone}"
+  expunge          = true
+}
+
+resource "cosmic_disk" "foo" {
+  name               = "terraform-disk"
+  attach             = true
+  size               = "20"
+  disk_offering      = "%s"
+  virtual_machine_id = "${cosmic_instance.foo.id}"
+  zone               = "${cosmic_instance.foo.zone}"
+}`,
+	COSMIC_VPC_NETWORK_OFFERING,
+	COSMIC_VPC_ID,
+	COSMIC_ZONE,
+	COSMIC_SERVICE_OFFERING_1,
+	COSMIC_TEMPLATE,
+	COSMIC_DISK_OFFERING_1)

@@ -72,7 +72,7 @@ func testAccCheckCosmicVPCAttributes(
 			return fmt.Errorf("Bad display text: %s", vpc.Displaytext)
 		}
 
-		if vpc.Cidr != COSMIC_VPC_CIDR_1 {
+		if vpc.Cidr != "10.0.10.0/22" {
 			return fmt.Errorf("Bad VPC CIDR: %s", vpc.Cidr)
 		}
 
@@ -107,13 +107,12 @@ func testAccCheckCosmicVPCDestroy(s *terraform.State) error {
 
 var testAccCosmicVPC_basic = fmt.Sprintf(`
 resource "cosmic_vpc" "foo" {
-  name = "terraform-vpc"
-  display_text = "terraform-vpc-text"
-  cidr = "%s"
-  vpc_offering = "%s"
+  name           = "terraform-vpc"
+  display_text   = "terraform-vpc-text"
+  cidr           = "10.0.10.0/22"
+  vpc_offering   = "%s"
   network_domain = "terraform-domain"
-  zone = "%s"
+  zone           = "%s"
 }`,
-	COSMIC_VPC_CIDR_1,
 	COSMIC_VPC_OFFERING,
 	COSMIC_ZONE)

@@ -17,7 +17,7 @@ func TestAccCosmicPrivateGateway_basic(t *testing.T) {
 		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckCosmicPrivateGatewayDestroy,
 		Steps: []resource.TestStep{
-			resource.TestStep{
+			{
 				Config: testAccCosmicPrivateGateway_basic,
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckCosmicPrivateGatewayExists(
@@ -60,7 +60,7 @@ func testAccCheckCosmicPrivateGatewayExists(n string, gateway *cosmic.PrivateGat
 func testAccCheckCosmicPrivateGatewayAttributes(gateway *cosmic.PrivateGateway) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
 
-		if gateway.Ipaddress != COSMIC_PRIVGW_IPADDRESS {
+		if gateway.Ipaddress != "10.0.252.254" {
 			return fmt.Errorf("Bad Gateway: %s", gateway.Ipaddress)
 		}
 
@@ -90,34 +90,23 @@ func testAccCheckCosmicPrivateGatewayDestroy(s *terraform.State) error {
 }
 
 var testAccCosmicPrivateGateway_basic = fmt.Sprintf(`
-resource "cosmic_vpc" "foobar" {
-	name = "terraform-vpc"
-	cidr = "%s"
-	vpc_offering = "%s"
-	zone = "%s"
-}
-
 resource "cosmic_network" "foo" {
-	name = "terraform-network"
-	cidr = "%s"
-	network_offering = "%s"
-	zone = "${cosmic_vpc.foobar.zone}"
+  name             = "terraform-network"
+  cidr             = "10.0.252.0/24"
+  network_offering = "DefaultPrivateGatewayNetworkOffering"
+  zone             = "%s"
 }
 
 resource "cosmic_network_acl" "foo" {
-	name = "terraform-acl"
-	vpc_id = "${cosmic_vpc.foobar.id}"
+  name   = "terraform-acl"
+  vpc_id = "%s"
 }
 
 resource "cosmic_private_gateway" "foo" {
-	ip_address = "%s"
-	network_id = "${cosmic_network.foo.id}"
-	acl_id = "${cosmic_network_acl.foo.id}"
-	vpc_id = "${cosmic_vpc.foobar.id}"
+  ip_address = "10.0.252.254"
+  network_id = "${cosmic_network.foo.id}"
+  acl_id     = "${cosmic_network_acl.foo.id}"
+  vpc_id     = "${cosmic_network_acl.foo.vpc_id}"
 }`,
-	COSMIC_VPC_CIDR_1,
-	COSMIC_VPC_OFFERING,
 	COSMIC_ZONE,
-	COSMIC_PRIVNW_CIDR,
-	COSMIC_PRIVNW_OFFERING,
-	COSMIC_PRIVGW_IPADDRESS)
+	COSMIC_VPC_ID)

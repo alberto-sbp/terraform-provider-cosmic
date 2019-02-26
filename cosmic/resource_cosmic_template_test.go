@@ -17,7 +17,7 @@ func TestAccCosmicTemplate_basic(t *testing.T) {
 		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckCosmicTemplateDestroy,
 		Steps: []resource.TestStep{
-			resource.TestStep{
+			{
 				Config: testAccCosmicTemplate_basic,
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckCosmicTemplateExists("cosmic_template.foo", &template),
@@ -38,7 +38,7 @@ func TestAccCosmicTemplate_update(t *testing.T) {
 		Providers:    testAccProviders,
 		CheckDestroy: testAccCheckCosmicTemplateDestroy,
 		Steps: []resource.TestStep{
-			resource.TestStep{
+			{
 				Config: testAccCosmicTemplate_basic,
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckCosmicTemplateExists("cosmic_template.foo", &template),
@@ -46,7 +46,7 @@ func TestAccCosmicTemplate_update(t *testing.T) {
 				),
 			},
 
-			resource.TestStep{
+			{
 				Config: testAccCosmicTemplate_update,
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckCosmicTemplateExists(
@@ -97,15 +97,15 @@ func testAccCheckCosmicTemplateBasicAttributes(
 			return fmt.Errorf("Bad name: %s", template.Name)
 		}
 
-		if template.Format != COSMIC_TEMPLATE_FORMAT {
+		if template.Format != "QCOW2" {
 			return fmt.Errorf("Bad format: %s", template.Format)
 		}
 
-		if template.Hypervisor != COSMIC_HYPERVISOR {
+		if template.Hypervisor != "KVM" {
 			return fmt.Errorf("Bad hypervisor: %s", template.Hypervisor)
 		}
 
-		if template.Ostypename != COSMIC_TEMPLATE_OS_TYPE {
+		if template.Ostypename != "Other PV (64-bit)" {
 			return fmt.Errorf("Bad os type: %s", template.Ostypename)
 		}
 
@@ -160,35 +160,23 @@ func testAccCheckCosmicTemplateDestroy(s *terraform.State) error {
 
 var testAccCosmicTemplate_basic = fmt.Sprintf(`
 resource "cosmic_template" "foo" {
-  name = "terraform-test"
-	format = "%s"
-  hypervisor = "%s"
-	os_type = "%s"
-	url = "%s"
-  zone = "%s"
-}
-`,
-	COSMIC_TEMPLATE_FORMAT,
-	COSMIC_HYPERVISOR,
-	COSMIC_TEMPLATE_OS_TYPE,
-	COSMIC_TEMPLATE_URL,
-	COSMIC_ZONE)
+  name       = "terraform-test"
+  format     = "QCOW2"
+  hypervisor = "KVM"
+  os_type    = "Other PV (64-bit)"
+  url        = "http://cloud.centos.org/centos/7/images/CentOS-7-x86_64-GenericCloud.qcow2"
+  zone       = "%s"
+}`, COSMIC_ZONE)
 
 var testAccCosmicTemplate_update = fmt.Sprintf(`
 resource "cosmic_template" "foo" {
-	name = "terraform-test"
-  display_text = "terraform-updated"
-	format = "%s"
-  hypervisor = "%s"
-  os_type = "%s"
-	url = "%s"
-  zone = "%s"
+  name                    = "terraform-test"
+  display_text            = "terraform-updated"
+  format                  = "QCOW2"
+  hypervisor              = "KVM"
+  os_type                 = "Other PV (64-bit)"
+  url                     = "http://cloud.centos.org/centos/7/images/CentOS-7-x86_64-GenericCloud.qcow2"
+  zone                    = "%s"
   is_dynamically_scalable = true
-	password_enabled = true
-}
-`,
-	COSMIC_TEMPLATE_FORMAT,
-	COSMIC_HYPERVISOR,
-	COSMIC_TEMPLATE_OS_TYPE,
-	COSMIC_TEMPLATE_URL,
-	COSMIC_ZONE)
+  password_enabled        = true
+}`, COSMIC_ZONE)
